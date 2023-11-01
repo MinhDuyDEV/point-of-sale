@@ -13,29 +13,31 @@ export default function Sidebar() {
   const pathname = usePathname();
   return (
     <motion.div
-      className="flex flex-col w-full h-screen gap-6 p-4 text-lg"
+      className="bg-gray-200 rounded-br-2xl rounded-tr-2xl"
       initial={{ opacity: 0, x: -100 }}
       animate={{ opacity: 1, x: 0 }}
     >
-      {sidebarLinks.map((link) => (
-        <SidebarLink
-          key={link.title}
-          isActive={pathname.includes(link.path)}
-          link={link}
-        ></SidebarLink>
-      ))}
-      <Link
-        href="/sign-in"
-        className={cn(
-          "flex items-center gap-5 font-bold text-zinc-500 hover:bg-zinc-300/50 hover:text-zinc-600 p-3 rounded-lg transition-all"
-        )}
-        onClick={() => {}}
-      >
-        <span>
-          <IconLogout />
-        </span>
-        <span>Logout</span>
-      </Link>
+      <div className="flex flex-col w-full h-screen gap-6 p-4 text-lg ">
+        {sidebarLinks.map((link) => (
+          <SidebarLink
+            key={link.title}
+            isActive={pathname.includes(link.path)}
+            link={link}
+          ></SidebarLink>
+        ))}
+        <Link
+          href="/sign-in"
+          className={cn(
+            "flex items-center gap-5 font-bold text-zinc-500 hover:bg-zinc-300/50 hover:text-zinc-600 p-3 rounded-lg transition-all"
+          )}
+          onClick={() => {}}
+        >
+          <span>
+            <IconLogout />
+          </span>
+          <span>Logout</span>
+        </Link>
+      </div>
     </motion.div>
   );
 }
