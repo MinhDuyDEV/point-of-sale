@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "framer-motion";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -193,7 +194,12 @@ export default function DataTableDemo() {
   });
 
   return (
-    <div className="w-full">
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.175 }}
+    >
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
@@ -304,6 +310,6 @@ export default function DataTableDemo() {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
