@@ -6,13 +6,17 @@ import {
   IconUser,
 } from "@/components/icons";
 import { TSidebarLink } from "@/types/general.types";
-import { redirect } from "next/navigation";
 
 export const sidebarLinks: TSidebarLink[] = [
   {
     title: "Home",
     icon: <IconHome />,
     path: "/home",
+  },
+  {
+    title: "POS",
+    icon: <IconHome />,
+    path: "/point-of-sale",
   },
   {
     title: "Dashboard",

@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const profile = true;
@@ -14,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return redirect("/sign-in");
   }
   return (
-    <div className="w-full h-screen bg-neutral-300/30">
+    <div className="w-full h-auto bg-neutral-300/30">
       <motion.div
         className="flex items-center justify-between w-full px-8 py-6"
         initial={{ opacity: 0, y: -100 }}
@@ -34,9 +35,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </Avatar>
         </div>
       </motion.div>
-      <div className="grid grid-cols-[250px_minmax(0,1fr)] min-h-screen">
+      <div className="grid grid-cols-[250px_minmax(0,1fr)] max-h-screen">
         <Sidebar />
-        <div className="h-screen p-8">{children}</div>
+        <div className="h-screen px-6">{children} </div>
       </div>
     </div>
   );
