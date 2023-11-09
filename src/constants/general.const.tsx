@@ -19,14 +19,19 @@ export const sidebarLinks: TSidebarLink[] = [
     path: "/point-of-sale",
   },
   {
+    title: "Users",
+    icon: <IconUser />,
+    path: "/users",
+  },
+  {
     title: "Dashboard",
     icon: <IconChart />,
     path: "/dashboard",
   },
   {
-    title: "Profile",
-    icon: <IconUser />,
-    path: "/profile",
+    title: "Products",
+    icon: <IconChart />,
+    path: "/products",
   },
   {
     title: "Settings",
