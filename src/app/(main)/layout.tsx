@@ -7,7 +7,6 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const profile = true;

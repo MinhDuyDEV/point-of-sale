@@ -3,6 +3,8 @@
 import React from "react";
 import ProductCard from "./product-card";
 import { Product } from "@/types/types";
+import { motion } from "framer-motion";
+import NoResults from "@/components/ui/no-results";
 
 interface ProductListProps {
   data: Product[];
@@ -26,9 +28,14 @@ const dataFake = [
 ];
 const ProductList = ({ data = dataFake }: ProductListProps) => {
   return (
-    <div className="space-y-4">
+    <motion.div
+      className="space-y-4"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+    >
       <h3 className="mb-8 text-3xl font-bold">Products</h3>
-      {/* {items.length === 0 && <NoResults />} */}
+      {data.length === 0 && <NoResults />}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {/* start */}
         {data.length >= 0 &&
@@ -37,7 +44,7 @@ const ProductList = ({ data = dataFake }: ProductListProps) => {
           })}
         {/* end */}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

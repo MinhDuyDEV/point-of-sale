@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import ProductList from "@/components/point-of-sale/product/product-list";
 import { Product } from "@/types/types";
 import CartItem from "@/components/point-of-sale/cart/cart-item";
+import { motion } from "framer-motion";
 
 const data = [
   {
@@ -32,7 +33,11 @@ const PointOfSalePage = () => {
   }, 0);
   return (
     <div className="flex flex-col gap-y-6">
-      <div className="flex items-center gap-5 w-[700px] mt-8 border border-gray-200 rounded-lg py-3 px-5 mx-auto">
+      <motion.div
+        className="flex items-center gap-5 w-[700px] mt-8 border border-gray-200 rounded-lg py-3 px-5 mx-auto"
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         <span className="flex-shrink-0 text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,24 +59,39 @@ const PointOfSalePage = () => {
           className="w-full bg-transparent outline-none"
           placeholder="Enter your product..."
         />
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-4">
-        <div className="flex flex-col col-span-3 px-4 gap-y-8 sm:px-6 lg:px-8">
+      <motion.div
+        className="grid grid-cols-4"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <motion.div
+          className="flex flex-col col-span-3 px-4 gap-y-8 sm:px-6 lg:px-8"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <ProductList data={data} />
-        </div>
+        </motion.div>
         {/* start cart */}
-        <div className="flex flex-col gap-y-8">
+        <motion.div
+          className="flex flex-col gap-y-8"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <h1 className="text-3xl font-bold text-black">Shopping Cart</h1>
           <div className="px-4 py-6 rounded-lg bg-gray-50 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
             <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
-            {cart.items.length === 0 && (
-              <p className="text-neutral-500">No items added to cart.</p>
-            )}
             <ul className="flex flex-col gap-y-2">
-              {cart.items.map((item: Product) => (
-                <CartItem key={item.id} data={item} />
-              ))}
+              {cart.items.length !== 0 ? (
+                cart.items.map((item: Product) => (
+                  <CartItem key={item.id} data={item} />
+                ))
+              ) : (
+                <p className="text-neutral-500">No items added to cart.</p>
+              )}
             </ul>
             <div className="mt-6 space-y-4">
               <div className="flex items-center justify-between pt-4 border-gray-200">
@@ -89,9 +109,9 @@ const PointOfSalePage = () => {
               Checkout
             </Button>
           </div>
-        </div>
+        </motion.div>
         {/* end cart */}
-      </div>
+      </motion.div>
     </div>
   );
 };

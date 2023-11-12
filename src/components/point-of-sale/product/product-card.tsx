@@ -18,7 +18,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
   const cart = useCart();
   const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    previewModal.onOpen();
+    previewModal.onOpen(data);
   };
   const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
