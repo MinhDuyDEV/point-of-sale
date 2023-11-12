@@ -4,10 +4,12 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 // import { Product } from '@/types';
 import { AlertTriangle } from "lucide-react";
+import { Product } from "@/types/types";
+import toast from "react-hot-toast";
 
 interface CartStore {
-  items: any;
-  addItem: (data: any) => void;
+  items: Product[];
+  addItem: (data: Product) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
 }
@@ -16,22 +18,39 @@ const useCart = create(
   persist<CartStore>(
     (set, get) => ({
       items: [],
-      addItem: (data: any) => {
+      addItem: (data: Product) => {
         const currentItems = get().items;
         const existingItem = currentItems.find(
-          (item: any) => item.id === data.id
+          (item: Product) => item.id === data.id
         );
 
         if (existingItem) {
-          // return toast("Item already in cart.");
+          if (typeof existingItem.Quantity === "number") {
+            existingItem.Quantity++;
+          }
+          set({
+            items: [...get().items],
+          });
+          toast.success("Item added to cart");
+        } else {
+          set({ items: [...get().items, data] });
+          toast.success("Item added to cart.");
         }
-
-        set({ items: [...get().items, data] });
-        // toast.success("Item added to cart.");
       },
+
       removeItem: (id: string) => {
-        set({ items: [...get().items.filter((item: any) => item.id !== id)] });
-        // toast.success("Item removed from cart.");
+        set({
+          items: [
+            ...get().items.filter((item: Product) => {
+              if (item.id !== id) {
+                return item;
+              } else {
+                item.Quantity = 1;
+              }
+            }),
+          ],
+        });
+        toast.success("Item removed from cart.");
       },
       removeAll: () => set({ items: [] }),
     }),
