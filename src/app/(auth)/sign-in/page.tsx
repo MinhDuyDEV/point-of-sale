@@ -17,23 +17,45 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { setAuthToken } from "@/utils/authToken";
 
 const formSchema = z.object({
-  email: z.string(),
-  password: z.string(),
+  Email: z.string(),
+  Password: z.string(),
 });
 
 export default function SignInPage() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      Email: "",
+      Password: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    try {
+      axios
+        .post("http://localhost:3000/api/users/login", {
+          ...values,
+        })
+        .then(function (response) {
+          console.log("🚀 ~ response:", response.data);
+          const token = response.data.token;
+          setAuthToken(token);
+          localStorage.setItem("token", token);
+          router.push("/");
+        })
+        .catch(function (error) {
+          console.log("🚀 ~ onSubmit ~ error:", error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -46,7 +68,7 @@ export default function SignInPage() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="email"
+              name="Email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -59,7 +81,7 @@ export default function SignInPage() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="Password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>

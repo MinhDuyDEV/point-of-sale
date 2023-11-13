@@ -2,21 +2,29 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const page = async () => {
+const SetupPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const profile = true;
-  if (profile) {
-    return redirect("/home");
-  }
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      return redirect("/home");
+    } else {
+      return redirect("/sign-in");
+    }
+  }, [token]);
   return (
     <Link
       className="flex items-center justify-center m-auto"
-      href="https://mail.google.com/mail/u/0/#inbox"
+      // href="https://mail.google.com/mail/u/0/#inbox"
+      href="/sign-in"
     >
       click me
     </Link>
   );
 };
 
-export default page;
+export default SetupPage;
