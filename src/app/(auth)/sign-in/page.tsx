@@ -19,7 +19,6 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { setAuthToken } from "@/utils/authToken";
 
 const formSchema = z.object({
   Email: z.string(),
@@ -46,7 +45,6 @@ export default function SignInPage() {
         .then(function (response) {
           console.log("🚀 ~ response:", response.data);
           const token = response.data.token;
-          setAuthToken(token);
           localStorage.setItem("token", token);
           router.push("/");
         })
