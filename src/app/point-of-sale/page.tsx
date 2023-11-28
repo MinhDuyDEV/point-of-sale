@@ -5,28 +5,37 @@ import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import ProductList from "@/components/point-of-sale/product/product-list";
-import { Product } from "@/types/types";
 import CartItem from "@/components/point-of-sale/cart/cart-item";
 import { motion } from "framer-motion";
-
-const data = [
-  {
-    id: "1",
-    Name: "IPhone",
-    Category: "Phone",
-    RetailPrice: 20,
-    Quantity: 1,
-  },
-  {
-    id: "2",
-    Name: "Samsung",
-    Category: "Phone",
-    RetailPrice: 50,
-    Quantity: 1,
-  },
-];
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { Product } from "@/types/general.types";
 
 const PointOfSalePage = () => {
+  const axiosPrivate = useAxiosPrivate();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const token = getCookie("token");
+    async function fetchProduct() {
+      try {
+        const response = await axios.get("/api/products", {
+          baseURL: "http://localhost:3000",
+          headers: {
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("🚀 ~ fetchProduct ~ response:", response.data);
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const cart = useCart();
   const totalPrice = cart.items.reduce((total, item) => {
     return total + Number(item.RetailPrice) * item.Quantity;
@@ -87,7 +96,7 @@ const PointOfSalePage = () => {
             <ul className="flex flex-col gap-y-2">
               {cart.items.length !== 0 ? (
                 cart.items.map((item: Product) => (
-                  <CartItem key={item.id} data={item} />
+                  <CartItem key={item._id} data={item} />
                 ))
               ) : (
                 <p className="text-neutral-500">No items added to cart.</p>

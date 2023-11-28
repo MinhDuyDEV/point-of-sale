@@ -3,8 +3,9 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 // import { Product } from '@/types';
-import { Product } from "@/types/types";
+
 import toast from "react-hot-toast";
+import { Product } from "@/types/general.types";
 
 interface CartStore {
   items: Product[];
@@ -20,7 +21,7 @@ const useCart = create(
       addItem: (data: Product) => {
         const currentItems = get().items;
         const existingItem = currentItems.find(
-          (item: Product) => item.id === data.id
+          (item: Product) => item._id === data._id
         );
 
         if (existingItem) {
@@ -41,7 +42,7 @@ const useCart = create(
         set({
           items: [
             ...get().items.filter((item: Product) => {
-              if (item.id !== id) {
+              if (item._id !== id) {
                 return item;
               } else {
                 item.Quantity = 1;

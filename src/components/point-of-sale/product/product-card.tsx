@@ -4,7 +4,8 @@ import Currency from "@/components/ui/currency";
 import IconButton from "@/components/ui/icon-button";
 import useCart from "@/hooks/use-cart";
 import usePreviewModal from "@/hooks/use-preview-modal";
-import { Product } from "@/types/types";
+import { Product } from "@/types/general.types";
+
 import { Expand, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import React, { MouseEventHandler } from "react";

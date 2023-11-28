@@ -8,6 +8,7 @@ import { TSidebarLink } from "@/types/general.types";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { IconLogout } from "./icons";
+import { deleteCookie } from "cookies-next";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -30,7 +31,7 @@ export default function Sidebar() {
           className={cn(
             "flex items-center gap-5 font-bold text-zinc-500 hover:bg-zinc-300/50 hover:text-zinc-600 p-3 rounded-lg transition-all"
           )}
-          onClick={() => {}}
+          onClick={() => deleteCookie("token")}
         >
           <span>
             <IconLogout />

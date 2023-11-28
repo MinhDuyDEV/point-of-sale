@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { getCookie, setCookie } from "cookies-next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   Email: z.string(),
@@ -26,6 +28,13 @@ const formSchema = z.object({
 });
 
 export default function SignInPage() {
+  useEffect(() => {
+    const token = getCookie("token");
+    if (token) {
+      return redirect("/home");
+    }
+  }, []);
+
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,16 +45,16 @@ export default function SignInPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     try {
       axios
         .post("http://localhost:3000/api/users/login", {
           ...values,
         })
         .then(function (response) {
-          console.log("🚀 ~ response:", response.data);
           const token = response.data.token;
-          localStorage.setItem("token", token);
+          const user = response.data.user;
+          setCookie("user", user);
+          setCookie("token", token);
           router.push("/");
         })
         .catch(function (error) {

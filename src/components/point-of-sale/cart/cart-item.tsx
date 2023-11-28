@@ -3,7 +3,8 @@
 import Currency from "@/components/ui/currency";
 import IconButton from "@/components/ui/icon-button";
 import useCart from "@/hooks/use-cart";
-import { Product } from "@/types/types";
+import { Product } from "@/types/general.types";
+
 import { X } from "lucide-react";
 import Image from "next/image";
 import React from "react";
@@ -15,7 +16,7 @@ interface CartItemProps {
 const CartItem = ({ data }: CartItemProps) => {
   const cart = useCart();
   const onRemove = () => {
-    cart.removeItem(data.id);
+    cart.removeItem(data._id);
   };
   return (
     <li className="flex py-6 border-b">

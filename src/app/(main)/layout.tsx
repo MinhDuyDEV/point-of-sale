@@ -4,15 +4,23 @@ import Logo from "@/components/Logo";
 import Sidebar from "@/components/Sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
+import { getCookie, hasCookie } from "cookies-next";
+import { User } from "@/types/general.types";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const profile = true;
-  if (!profile) {
-    return redirect("/sign-in");
-  }
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    if (!hasCookie("token")) {
+      return redirect("/sign-in");
+    }
+    const user = getCookie("user");
+    if (user) {
+      setUser(JSON.parse(user?.toString()));
+    }
+  }, []);
   return (
     <div className="w-full h-auto bg-neutral-300/30">
       <motion.div
@@ -27,9 +35,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <SearchBar></SearchBar>
         </div>
         <div className="flex items-center justify-center gap-x-3">
-          <p>Minh Duy</p>
+          <p>{user?.Fullname}</p>
           <Avatar className="w-12 h-12">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={user?.Profile_Picture} alt="avatar" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>

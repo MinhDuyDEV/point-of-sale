@@ -2,31 +2,17 @@
 
 import React from "react";
 import ProductCard from "./product-card";
-import { Product } from "@/types/types";
+
 import { motion } from "framer-motion";
 import NoResults from "@/components/ui/no-results";
+import { Product } from "@/types/general.types";
 
 interface ProductListProps {
   data: Product[];
 }
 
-const dataFake = [
-  {
-    id: "1",
-    Name: "IPhone",
-    Category: "Phone",
-    RetailPrice: 20,
-    Quantity: 1,
-  },
-  {
-    id: "2",
-    Name: "Samsung",
-    Category: "Phone",
-    RetailPrice: 50,
-    Quantity: 1,
-  },
-];
-const ProductList = ({ data = dataFake }: ProductListProps) => {
+const ProductList = ({ data }: ProductListProps) => {
+  console.log(data);
   return (
     <motion.div
       className="space-y-4"
@@ -40,7 +26,7 @@ const ProductList = ({ data = dataFake }: ProductListProps) => {
         {/* start */}
         {data.length >= 0 &&
           data.map((item: Product) => {
-            return <ProductCard key={item.id} data={item} />;
+            return <ProductCard key={item._id} data={item} />;
           })}
         {/* end */}
       </div>
