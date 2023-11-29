@@ -36,7 +36,7 @@ const CartItem = ({ data }: CartItemProps) => {
           <div className="flex flex-col items-start gap-y-3">
             <p className="text-base font-semibold text-black ">{data.Name}</p>
             <Currency value={Number(data.RetailPrice)} />
-            <p>{Number(data.Quantity)}</p>
+            <p>{Number(data.Flag)}</p>
           </div>
         </div>
       </div>

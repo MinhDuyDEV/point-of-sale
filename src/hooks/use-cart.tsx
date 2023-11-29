@@ -25,14 +25,20 @@ const useCart = create(
         );
 
         if (existingItem) {
-          if (typeof existingItem.Quantity === "number") {
-            existingItem.Quantity++;
+          if (
+            typeof existingItem.Quantity === "number" &&
+            typeof existingItem.Flag === "number"
+          ) {
+            if (existingItem.Quantity > existingItem.Flag) {
+              existingItem.Flag++;
+            }
           }
           set({
             items: [...get().items],
           });
           toast.success("Item added to cart");
         } else {
+          data.Flag++;
           set({ items: [...get().items, data] });
           toast.success("Item added to cart.");
         }
@@ -45,7 +51,7 @@ const useCart = create(
               if (item._id !== id) {
                 return item;
               } else {
-                item.Quantity = 1;
+                item.Flag = 1;
               }
             }),
           ],

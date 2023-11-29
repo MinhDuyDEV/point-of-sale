@@ -26,5 +26,5 @@ export type Product = {
   RetailPrice: number;
   updatedAt: string;
   _id: string;
-  index: 1;
+  Flag: 1;
 };

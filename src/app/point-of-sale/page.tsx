@@ -38,7 +38,7 @@ const PointOfSalePage = () => {
   }, []);
   const cart = useCart();
   const totalPrice = cart.items.reduce((total, item) => {
-    return total + Number(item.RetailPrice) * item.Quantity;
+    return total + Number(item.RetailPrice) * item.Flag;
   }, 0);
   return (
     <div className="flex flex-col gap-y-6">
