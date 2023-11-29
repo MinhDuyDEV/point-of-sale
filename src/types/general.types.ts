@@ -21,10 +21,9 @@ export type Product = {
   Category: string;
   ImportPrice: number;
   Name: string;
-  OrderDetails: [];
   Quantity: number;
   RetailPrice: number;
-  updatedAt: string;
+  Image: string;
   _id: string;
-  Flag: 1;
+  Flag: number;
 };

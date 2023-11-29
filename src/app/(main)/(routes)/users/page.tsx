@@ -1,315 +1,178 @@
 "use client";
 
-import * as React from "react";
-import { motion } from "framer-motion";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { User } from "@/types/general.types";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
+import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+import axios from "axios";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
+async function getData(): Promise<User[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      Orders: [],
+      Email: "employee1@gmail.com",
+      Fullname: "Nguyen Van 1",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/75315b0e987e02688468fe059efece11?s=100&r…",
+      IsOnline: true,
+      IsLocked: false,
+      IsActive: true,
+      id: "65106f2f57404a40a54a7f3e",
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="font-medium text-right">{formatted}</div>;
+    {
+      Orders: [],
+      Email: "employee2@gmail.com",
+      Fullname: "Nguyen Van 2",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/75315b0e987e02688468fe059efece11?s=100&r…",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: true,
+      id: "65106f2f57404a40a54a7f3f",
     },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-8 h-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+    {
+      Orders: [],
+      Email: "employee5@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/75315b0e987e02688468fe059efece11?s=100&r…",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: true,
+      id: "65106f2f57404a40a54a7f42",
     },
-  },
-];
-
-export default function DataTableDemo() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
+    {
+      Orders: [],
+      Email: "employee4@gmail.com",
+      Fullname: "Nguyen Van 4",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/75315b0e987e02688468fe059efece11?s=100&r…",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: true,
+      id: "65106f2f57404a40a54a7f41",
     },
-  });
+    {
+      Orders: [],
+      Email: "employee3@gmail.com",
+      Fullname: "Nguyen Van 3",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/75315b0e987e02688468fe059efece11?s=100&r…",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: true,
+      id: "65106f2f57404a40a54a7f40",
+    },
+    {
+      Email: "taikhoanlmng1@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/253bf7668a3e9e8a715b7351d230c4c8?s=100&r=x&d=retro",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: false,
+      Orders: [],
+      id: "65106f769138348b718c2894",
+    },
+    {
+      Email: "taikhoanlmng11@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/63f33e8348ca8f43f5b5703e30446ffe?s=100&r=x&d=retro",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: false,
+      Orders: [],
+      id: "65106fa5d3f90bb5d51bb068",
+    },
+    {
+      Email: "taikhoanlmng212@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/e1d8fbbe91e3c27913fa705b45f00474?s=100&r=x&d=retro",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: false,
+      Orders: [],
+      id: "65106fbf7007fbe31c01f2e2",
+    },
+    {
+      Email: "taikhoanlmng@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://res.cloudinary.com/dfxqz0959/image/upload/v1701189765/cloudImageWebNodejs/avatar/hpton8l6je9olmnaovec.png",
+      IsOnline: true,
+      IsLocked: false,
+      IsActive: true,
+      Orders: [],
+      id: "6513174510eb38a7e7caa2f7",
+    },
+    {
+      Email: "taikhoan1@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/d83b48fadade7934ac0d17f7d8916b49?s=100&r=x&d=retro",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: false,
+      Orders: [],
+      id: "651ac89b5e3dfb59e28db6a8",
+    },
+    {
+      Email: "abc123@gmail.com",
+      Fullname: "Nguyen Van Tan",
+      Role: "employee",
+      Profile_Picture:
+        "https://s.gravatar.com/avatar/a751156c43e6349d8eae1f392950df34?s=100&r=x&d=retro",
+      IsOnline: false,
+      IsLocked: false,
+      IsActive: false,
+      Orders: [],
+      id: "6550ca0fa3cfe37f6a12f7d4",
+    },
+    // ...
+  ];
+}
+
+export default function DemoPage() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const token = getCookie("token");
+    async function fetchProduct() {
+      try {
+        const response = await axios.get("/api/users", {
+          baseURL: "http://localhost:3000",
+          headers: {
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <motion.div
-      className="w-full"
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.175 }}
-    >
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="w-4 h-4 ml-2" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end py-4 space-x-2">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
-    </motion.div>
+    <div className="px-8 py-10 mx-auto">
+      <DataTable columns={columns} data={data} />
+    </div>
   );
 }

@@ -13,7 +13,6 @@ import { getCookie } from "cookies-next";
 import { Product } from "@/types/general.types";
 
 const PointOfSalePage = () => {
-  const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
 
   useEffect(() => {
