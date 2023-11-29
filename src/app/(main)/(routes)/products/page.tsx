@@ -10,7 +10,8 @@ import Heading from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function DemoPage() {
   // const data = await getData();
@@ -38,7 +39,12 @@ export default function DemoPage() {
   }, []);
   const router = useRouter();
   return (
-    <div className="px-8 py-10 mx-auto">
+    <motion.div
+      className="px-8 py-10 mx-auto"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.175 }}
+    >
       <div className="flex items-center justify-between">
         <Heading
           title={`Products (${data.length})`}
@@ -51,6 +57,6 @@ export default function DemoPage() {
       </div>
       <Separator />
       <DataTable columns={columns} data={data} searchKey="Name" />
-    </div>
+    </motion.div>
   );
 }

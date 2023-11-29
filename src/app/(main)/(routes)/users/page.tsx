@@ -6,6 +6,11 @@ import { DataTable } from "./data-table";
 import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import axios from "axios";
+import Heading from "@/components/ui/heading";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 async function getData(): Promise<User[]> {
   // Fetch data from your API here.
@@ -169,9 +174,20 @@ export default function DemoPage() {
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const router = useRouter();
   return (
     <div className="px-8 py-10 mx-auto">
+      <div className="flex items-center justify-between">
+        <Heading
+          title={`Users (${data.length})`}
+          description="Manage user for your store"
+        ></Heading>
+        <Button onClick={() => router.push(`/users/new`)}>
+          <Plus className="w-4 h-4 mr-2"></Plus>
+          Add new
+        </Button>
+      </div>
+      <Separator />
       <DataTable columns={columns} data={data} />
     </div>
   );
