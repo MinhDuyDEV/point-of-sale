@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { sidebarLinks } from "@/constants/general.const";
@@ -8,10 +8,18 @@ import { TSidebarLink } from "@/types/general.types";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { IconLogout } from "./icons";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [user, setUser] = useState<any>({});
+  useEffect(() => {
+    const info = getCookie("user");
+    if (info) {
+      setUser(JSON.parse(info));
+    }
+  }, []);
+
   return (
     <motion.div
       className="bg-gray-200 rounded-br-2xl rounded-tr-2xl"
@@ -19,13 +27,15 @@ export default function Sidebar() {
       animate={{ opacity: 1, x: 0 }}
     >
       <div className="flex flex-col w-full h-screen gap-6 p-4 text-lg ">
-        {sidebarLinks.map((link) => (
-          <SidebarLink
-            key={link.title}
-            isActive={pathname.includes(link.path)}
-            link={link}
-          ></SidebarLink>
-        ))}
+        {sidebarLinks
+          .filter((link) => link.role?.includes(user.Role))
+          .map((link) => (
+            <SidebarLink
+              key={link.title}
+              isActive={pathname.includes(link.path)}
+              link={link}
+            ></SidebarLink>
+          ))}
         <Link
           href="/sign-in"
           className={cn(

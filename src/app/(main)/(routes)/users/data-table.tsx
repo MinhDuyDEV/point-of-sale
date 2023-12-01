@@ -12,7 +12,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { motion } from "framer-motion";
 import {
   Table,
   TableBody,
@@ -49,6 +48,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    paginateExpandedRows: true,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -66,12 +66,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <motion.div
-      className="w-full"
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.175 }}
-    >
+    <div className="w-full">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter name..."
@@ -184,6 +179,6 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -21,26 +21,28 @@ import {
 } from "@/components/ui/form";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { Product } from "@/types/general.types";
+import { User } from "@/types/general.types";
 import { AlertModal } from "@/components/modals/alert-modal";
-// import { AlertModal } from "@/components/modals/alert-modal";
-// import { useOrigin } from "@/hooks/use-origin";
-// import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
-  Name: z.string().min(1),
-  Category: z.string().min(1),
+  Email: z.string().min(1),
+  Fullname: z.string().min(1),
+  IsActive: z.boolean(),
+  IsLocked: z.boolean(),
+  IsOnline: z.boolean(),
+  Profile_Picture: z.string().min(1),
+  Role: z.string().min(1),
+  _id: z.string().min(1),
 });
 
-type ProductFormValues = z.infer<typeof formSchema>;
+type UserFormValues = z.infer<typeof formSchema>;
 
-interface ProductFormProps {
+interface UserFormProps {
   initialData: any | null;
 }
-// initialData: Product | null;
+// initialData: User | null;
 
-const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
-  console.log("🚀 ~ initialData:", initialData);
+const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -49,31 +51,24 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const description = initialData ? "Edit a product" : "Add a new product";
   const toastMessage = initialData ? "Product updated" : "Product created";
   const action = initialData ? "Save changes" : "Create";
-  const form = useForm<ProductFormValues>({
+  const form = useForm<UserFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData
-      ? {
-          ...initialData,
-        }
-      : {
-          Name: "",
-          Category: "",
-        },
+    defaultValues: initialData || {
+      Email: "",
+      Fullname: "",
+    },
   });
-  const onSubmit = async (data: ProductFormValues) => {
+  const onSubmit = async (data: UserFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(
-          `/api/${params.storeId}/products/${params.productId}`,
-          data
-        );
+        await axios.patch(`/api/users/${params.productId}`, data);
       } else {
-        await axios.post(`/api/${params.storeId}/products`, data);
+        await axios.post(`/api/users`, data);
       }
       router.refresh();
       toast.success(toastMessage);
-      router.push(`/${params.storeId}/products`);
+      router.push(`/users`);
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
@@ -83,10 +78,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
+      await axios.delete(`/api/${params.storeId}/users/${params.productId}`);
       router.refresh();
       toast.success("Product deleted.");
-      router.push(`${params.storeId}/products`);
+      router.push(`${params.storeId}/users`);
     } catch (error) {
       toast.error(
         "Make sure you removed all categories using this product first."
@@ -96,7 +91,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
       setOpen(false);
     }
   };
-  console.log("🚀 ~  ~ params.productId:", params.productId);
   return (
     <>
       <AlertModal
@@ -128,7 +122,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         >
           <FormField
             control={form.control}
-            name="Name"
+            name="Email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Product name</FormLabel>
@@ -146,7 +140,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="Category"
+              name="Fullname"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Product category</FormLabel>
@@ -171,4 +165,4 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   );
 };
 
-export default ProductForm;
+export default UserForm;

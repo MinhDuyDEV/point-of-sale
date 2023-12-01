@@ -9,7 +9,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -45,7 +44,6 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
-
   return (
     <div>
       <div className="flex items-center py-4">

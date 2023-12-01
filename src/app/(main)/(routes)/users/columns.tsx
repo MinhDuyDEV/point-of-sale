@@ -14,26 +14,21 @@ import { cn } from "@/lib/utils";
 import { User } from "@/types/general.types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Image from "next/image";
 
 export const columns: ColumnDef<User>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    accessorKey: "Profile_Picture",
+    header: "Avatar",
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <Image
+        src={row.getValue("Profile_Picture")}
+        height={30}
+        width={30}
+        className="object-cover rounded-full"
+        alt="..."
+      ></Image>
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: "Fullname",

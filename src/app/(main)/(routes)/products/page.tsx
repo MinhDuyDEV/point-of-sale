@@ -40,7 +40,7 @@ export default function DemoPage() {
   const router = useRouter();
   return (
     <motion.div
-      className="px-8 py-10 mx-auto"
+      className="h-screen px-8 py-10 mx-auto"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.175 }}

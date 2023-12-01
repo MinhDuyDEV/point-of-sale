@@ -22,9 +22,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
   return (
-    <div className="w-full h-auto bg-neutral-300/30">
+    <div className="w-full h-full">
       <motion.div
-        className="flex items-center justify-between w-full px-8 py-6"
+        className="flex items-center justify-between w-full h-full px-8 py-6"
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
       >
