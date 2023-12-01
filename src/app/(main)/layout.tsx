@@ -34,8 +34,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div>
           <SearchBar></SearchBar>
         </div>
-        <div className="flex items-center justify-center gap-x-3">
-          <p>{user?.Fullname}</p>
+        <div className="flex items-center justify-center gap-x-4">
+          <p className="text-2xl capitalize font-semibold">{user?.Fullname}</p>
           <Avatar className="w-12 h-12">
             <AvatarImage src={user?.Profile_Picture} alt="avatar" />
             <AvatarFallback>CN</AvatarFallback>

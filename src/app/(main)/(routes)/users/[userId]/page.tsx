@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import UserForm from "./user-form";
 import { getCookie } from "cookies-next";
 import axios from "axios";
+import { User } from "@/types/general.types";
 
 const UserPage = ({ params }: { params: { userId: string } }) => {
   // const user = {
@@ -17,7 +18,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
   //   RetailPrice: 500,
   //   _id: "65674bbc45a2676209906eb9",
   // };
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState<User | null>(null);
   console.log("🚀 ~ UserPage ~ params.userId:", params.userId);
   useEffect(() => {
     const token = getCookie("token");

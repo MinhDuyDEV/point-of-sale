@@ -22,35 +22,23 @@ import {
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { User } from "@/types/general.types";
-import { AlertModal } from "@/components/modals/alert-modal";
+import { getCookie } from "cookies-next";
 
 const formSchema = z.object({
-  Email: z.string().min(1),
+  Email: z.string().min(1).email("Cannot type email"),
   Fullname: z.string().min(1),
-  IsActive: z.boolean(),
-  IsLocked: z.boolean(),
-  IsOnline: z.boolean(),
-  Profile_Picture: z.string().min(1),
-  Role: z.string().min(1),
-  _id: z.string().min(1),
 });
 
 type UserFormValues = z.infer<typeof formSchema>;
 
 interface UserFormProps {
-  initialData: any | null;
+  initialData: User | null;
 }
-// initialData: User | null;
 
 const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
-  const params = useParams();
+  const token = getCookie("token");
   const router = useRouter();
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = initialData ? "Edit" : "Create product";
-  const description = initialData ? "Edit a product" : "Add a new product";
-  const toastMessage = initialData ? "Product updated" : "Product created";
-  const action = initialData ? "Save changes" : "Create";
   const form = useForm<UserFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -59,15 +47,18 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
     },
   });
   const onSubmit = async (data: UserFormValues) => {
+    console.log("🚀 ~ onSubmit ~ data:", data);
     try {
       setLoading(true);
-      if (initialData) {
-        await axios.patch(`/api/users/${params.productId}`, data);
-      } else {
-        await axios.post(`/api/users`, data);
-      }
+      await axios.post(`/api/users/register`, data, {
+        baseURL: "http://localhost:3000",
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       router.refresh();
-      toast.success(toastMessage);
+      toast.success("Send email successfully");
       router.push(`/users`);
     } catch (error) {
       toast.error("Something went wrong.");
@@ -75,44 +66,11 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
       setLoading(false);
     }
   };
-  const onDelete = async () => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/${params.storeId}/users/${params.productId}`);
-      router.refresh();
-      toast.success("Product deleted.");
-      router.push(`${params.storeId}/users`);
-    } catch (error) {
-      toast.error(
-        "Make sure you removed all categories using this product first."
-      );
-    } finally {
-      setLoading(false);
-      setOpen(false);
-    }
-  };
+
   return (
     <>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      ></AlertModal>
-      <div className="flex items-center justify-between">
-        <Heading title={title} description={description}></Heading>
-        {initialData && (
-          <Button
-            disabled={loading}
-            variant="destructive"
-            size="icon"
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            <Trash className="w-4 h-4" />
-          </Button>
-        )}
+      <div className="flex items-center justify-start">
+        <Heading title="Create user" description="Add a new user"></Heading>
       </div>
       <Separator></Separator>
       <Form {...form}>
@@ -125,11 +83,12 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
             name="Email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product name</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
-                    placeholder="Product name"
+                    type="email"
+                    placeholder="Email"
                     {...field}
                   ></Input>
                 </FormControl>
@@ -143,11 +102,11 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
               name="Fullname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product category</FormLabel>
+                  <FormLabel>Full name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Product category"
+                      placeholder="Full name"
                       {...field}
                     ></Input>
                   </FormControl>
@@ -157,7 +116,7 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
             ></FormField>
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
-            {action}
+            Create
           </Button>
         </form>
       </Form>

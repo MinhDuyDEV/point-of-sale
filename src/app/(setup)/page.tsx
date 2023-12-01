@@ -1,16 +1,23 @@
 "use client";
 
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
-import { hasCookie } from "cookies-next";
+import { useEffect, useState } from "react";
+import { getCookie, hasCookie } from "cookies-next";
+import { User } from "@/types/general.types";
 const SetupPage = () => {
+  const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    if (hasCookie("token")) {
-      return redirect("/home");
+    const info = getCookie("user");
+    if (info) {
+      setUser(JSON.parse(info));
     }
-  }, []);
-  return redirect("/sign-in");
+    console.log("🚀 ~ SetupPage ~ user:", user);
+  }, [user]);
+  if (hasCookie("token") && user?.IsActive === true) {
+    return redirect("/home");
+  } else {
+    return <div>change password</div>;
+  }
 };
 
 export default SetupPage;

@@ -45,6 +45,7 @@ export default function SignInPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("🚀 ~ onSubmit ~ values:", values);
     try {
       axios
         .post("http://localhost:3000/api/users/login", {

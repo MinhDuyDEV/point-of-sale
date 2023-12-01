@@ -12,6 +12,7 @@ export type User = {
   IsLocked: boolean;
   IsOnline: boolean;
   Orders: [];
+  FirstLogin?: boolean;
   Profile_Picture: string;
   Role: string;
   id: string;
@@ -20,10 +21,11 @@ export type User = {
 export type Product = {
   Barcode: string;
   Category: string;
-  ImportPrice: number;
+  ImportPrice?: number;
   Name: string;
   Quantity: number;
   RetailPrice: number;
+  OrderDetails?: [];
   Image: string;
   _id: string;
   Flag: number;

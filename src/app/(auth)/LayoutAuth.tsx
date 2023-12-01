@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { hasCookie } from "cookies-next";
 
 const LayoutAuth = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const token = localStorage.getItem("token");
+
   useEffect(() => {
-    if (token) {
+    if (hasCookie("token")) {
       router.push("/home");
     } else {
       router.push("/sign-in");

@@ -23,9 +23,6 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Product } from "@/types/general.types";
 import { AlertModal } from "@/components/modals/alert-modal";
-// import { AlertModal } from "@/components/modals/alert-modal";
-// import { useOrigin } from "@/hooks/use-origin";
-// import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
   Name: z.string().min(1),
@@ -35,9 +32,8 @@ const formSchema = z.object({
 type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
-  initialData: any | null;
+  initialData: Product | null;
 }
-// initialData: Product | null;
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   console.log("🚀 ~ initialData:", initialData);
@@ -51,14 +47,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const action = initialData ? "Save changes" : "Create";
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData
-      ? {
-          ...initialData,
-        }
-      : {
-          Name: "",
-          Category: "",
-        },
+    defaultValues: initialData || {
+      Name: "",
+      Category: "",
+    },
   });
   const onSubmit = async (data: ProductFormValues) => {
     try {
@@ -96,7 +88,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
       setOpen(false);
     }
   };
-  console.log("🚀 ~  ~ params.productId:", params.productId);
   return (
     <>
       <AlertModal
