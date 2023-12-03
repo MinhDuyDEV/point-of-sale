@@ -1,27 +1,48 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import UserForm from "./user-form";
-import { getCookie } from "cookies-next";
-import axios from "axios";
 import { User } from "@/types/general.types";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Heading from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Lock, Unlock } from "lucide-react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const UserPage = ({ params }: { params: { userId: string } }) => {
-  // const user = {
-  //   Barcode: "123456789",
-  //   Category: "Electronics",
-  //   Flag: 0,
-  //   Image: "https://example.com/images/smartphone-x.jpg",
-  //   ImportPrice: 300,
-  //   Name: "IphoneX",
-  //   Quantity: 50,
-  //   RetailPrice: 500,
-  //   _id: "65674bbc45a2676209906eb9",
-  // };
   const [user, setUser] = useState<User | null>(null);
-  console.log("🚀 ~ UserPage ~ params.userId:", params.userId);
-  useEffect(() => {
+  const token = getCookie("token");
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const onLock = async (id: string | undefined) => {
     const token = getCookie("token");
+    try {
+      setLoading(true);
+      const response = await axios.patch(
+        `http://localhost:3000/api/users/lock/${id}`,
+        {},
+        {
+          baseURL: "http://localhost:3000",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "Application/json",
+          },
+        }
+      );
+      toast.success(`${response.data.message}`);
+      router.back();
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
     async function fetchProduct() {
       try {
         const response = await axios.get(`/api/users/${params.userId}`, {
@@ -40,12 +61,35 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log("🚀 ~ UserPage ~ user:", user);
   return (
-    <div className="flex-col">
-      <div className="flex-1 p-8 pt-6 space-y-4">
-        <UserForm initialData={user}></UserForm>
+    <motion.div
+      className="h-auto px-8 py-6 mx-auto"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.175 }}
+    >
+      <div className="flex items-center justify-between mb-3 gap-x-6">
+        <Heading
+          title="User Profile"
+          description={`Profile ${user?.Fullname}`}
+        ></Heading>
+        <div className="flex items-center justify-center gap-x-3">
+          <Avatar className="w-12 h-12">
+            <AvatarImage src="https://source.unsplash.com/random" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <Button
+            onClick={() => onLock(user?.id)}
+            disabled={loading}
+            variant={user?.IsLocked ? "destructive" : "ghost"}
+          >
+            {user?.IsLocked ? <Lock /> : <Unlock />}
+          </Button>
+        </div>
       </div>
-    </div>
+      <Separator />
+    </motion.div>
   );
 };
 

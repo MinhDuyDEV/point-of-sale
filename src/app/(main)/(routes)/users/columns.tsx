@@ -4,7 +4,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { User } from "@/types/general.types";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  Lock,
+  MoreHorizontal,
+  Power,
+  PowerOff,
+  ShieldCheck,
+  ShieldX,
+  Unlock,
+} from "lucide-react";
 import Image from "next/image";
 import CellAction from "./cell-action";
 
@@ -14,13 +23,12 @@ export type UserColumn = {
   IsActive: boolean;
   IsLocked: boolean;
   IsOnline: boolean;
-  Orders: [];
   Profile_Picture: string;
   Role: string;
   id: string;
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserColumn>[] = [
   {
     accessorKey: "Profile_Picture",
     header: "Avatar",
@@ -36,7 +44,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "Fullname",
-    header: "Fullname",
+    header: "Full Name",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("Fullname")}</div>
     ),
@@ -63,15 +71,55 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "IsActive",
-    header: "IsActive",
+    header: "Active",
     cell: ({ row }) => (
       <div
         className={cn(
           "capitalize w-fit p-1 rounded-md",
-          row.getValue("IsActive") === true ? "bg-green-500" : "bg-red-500"
+          row.getValue("IsActive") === true ? "bg-green-400" : "bg-red-400"
         )}
       >
-        {row.getValue("IsActive") === true ? "Active" : "Inactive"}
+        {row.getValue("IsActive") === true ? (
+          <ShieldCheck size={20} />
+        ) : (
+          <ShieldX size={20} />
+        )}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "IsLocked",
+    header: "Locked",
+    cell: ({ row }) => (
+      <div
+        className={cn(
+          "capitalize w-fit p-1 rounded-md shadow-md",
+          row.getValue("IsLocked") === true ? "bg-red-400" : "bg-green-400"
+        )}
+      >
+        {row.getValue("IsLocked") === true ? (
+          <Lock size={20} />
+        ) : (
+          <Unlock size={20} />
+        )}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "IsOnline",
+    header: "Online",
+    cell: ({ row }) => (
+      <div
+        className={cn(
+          "capitalize w-fit p-1 rounded-md",
+          row.getValue("IsOnline") === true ? "bg-green-400" : "bg-red-400"
+        )}
+      >
+        {row.getValue("IsOnline") === true ? (
+          <Power size={20} />
+        ) : (
+          <PowerOff size={20} />
+        )}
       </div>
     ),
   },

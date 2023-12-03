@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { BookUser, Lock, MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -24,14 +24,9 @@ interface CellActionProps {
 }
 
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const token = getCookie("token");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success("User Id copied to the clipboard.");
-  };
   return (
     <>
       <AlertModal
@@ -49,14 +44,14 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data.id)}>
-            <Copy className="w-4 h-4 mr-2" />
-            Copy ID
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push(`/users/${data.id}`)}>
-            <Edit className="w-4 h-4 mr-2" />
-            Update
+            <BookUser className="w-4 h-4 mr-2" />
+            User details
           </DropdownMenuItem>
+          {/* <DropdownMenuItem onClick={() => onLock(data.id)}>
+            <Lock className="w-4 h-4 mr-2" />
+            Lock
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

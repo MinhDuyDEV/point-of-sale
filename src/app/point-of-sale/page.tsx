@@ -11,10 +11,11 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Product } from "@/types/general.types";
+import { useRouter } from "next/navigation";
 
 const PointOfSalePage = () => {
   const [data, setData] = useState([]);
-
+  const router = useRouter();
   useEffect(() => {
     const token = getCookie("token");
     async function fetchProduct() {
@@ -110,11 +111,10 @@ const PointOfSalePage = () => {
               </div>
             </div>
             <Button
-              // onClick={onCheckout}
-              disabled={cart.items.length === 0}
+              onClick={() => router.push("/cart")}
               className="w-full mt-6"
             >
-              Checkout
+              Go to cart
             </Button>
           </div>
         </motion.div>
