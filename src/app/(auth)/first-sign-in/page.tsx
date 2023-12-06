@@ -36,7 +36,7 @@ export default function SignInPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.password === values.passwordConfirm) {
-      router.push("/home");
+      router.push("/customers");
       console.log(values);
     } else {
       toast.error("Password confirm not match");

@@ -58,6 +58,24 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
         console.log(error);
       }
     }
+    async function fetchOrder() {
+      try {
+        const response = await axios.get(
+          `/api/orders/employee/${params.userId}`,
+          {
+            baseURL: "http://localhost:3000",
+            headers: {
+              "Content-Type": "Application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("🚀 ~ fetchOrder ~ response.data:", response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchOrder();
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

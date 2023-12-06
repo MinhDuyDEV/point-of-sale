@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Copy, Edit, MoreHorizontal, SaveAll, Trash } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { ProductColumn } from "./columns";
-import { getCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 
 interface CellActionProps {
   data: ProductColumn;
@@ -25,42 +25,21 @@ interface CellActionProps {
 
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
-  const token = getCookie("token");
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success("Product Id copied to the clipboard.");
+  const onCopy = (data: any) => {
+    console.log("🚀 ~ onCopy ~ data:", data);
+    setCookie("customer", data);
+    toast.success("Billboard Id copied to the clipboard.");
   };
-  const onDelete = async () => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/products/${data._id}`, {
-        baseURL: "http://localhost:3000",
-        headers: {
-          "Content-Type": "Application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      router.refresh();
-      router.push(`/products`);
-      toast.success("Product deleted.");
-    } catch (error) {
-      toast.error(
-        "Make sure you removed all categories using this billboard first."
-      );
-    } finally {
-      setLoading(false);
-      setOpen(false);
-    }
-  };
+
   return (
     <>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={() => onDelete()}
+        onConfirm={() => {}}
         loading={loading}
       ></AlertModal>
       <DropdownMenu>
@@ -72,17 +51,24 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data._id)}>
-            <Copy className="w-4 h-4 mr-2" />
-            Copy ID
+          <DropdownMenuItem
+            onClick={() => onCopy(data)}
+            className="cursor-pointer"
+          >
+            <SaveAll className="w-4 h-4 mr-2" />
+            Save
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/products/${data._id}`)}
+            onClick={() => router.push(`/products/${data.id}`)}
+            className="cursor-pointer"
           >
             <Edit className="w-4 h-4 mr-2" />
             Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className="cursor-pointer"
+          >
             <Trash className="w-4 h-4 mr-2" />
             Delete
           </DropdownMenuItem>

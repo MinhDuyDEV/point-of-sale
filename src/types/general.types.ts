@@ -26,7 +26,20 @@ export type Product = {
   Quantity: number;
   RetailPrice: number;
   OrderDetails?: [];
-  Image: string;
+  Image: Image[];
   _id: string;
   Flag: number;
+};
+
+export type Image = {
+  _id: string;
+  url: string;
+  productId: string;
+};
+
+export type Customer = {
+  _id: string;
+  FullName: string;
+  PhoneNumber: string;
+  Address: string;
 };

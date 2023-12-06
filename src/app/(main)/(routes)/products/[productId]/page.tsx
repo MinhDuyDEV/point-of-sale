@@ -19,7 +19,6 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
         setProduct(response.data);
       } catch (error) {
         console.log(error);
@@ -30,7 +29,8 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 p-8 pt-6 space-y-4">
-        <ProductForm initialData={product}></ProductForm>
+        {product && <ProductForm initialData={product}></ProductForm>}
+        {!product && <ProductForm initialData={product}></ProductForm>}
       </div>
     </div>
   );

@@ -10,9 +10,9 @@ import { TSidebarLink } from "@/types/general.types";
 
 export const sidebarLinks: TSidebarLink[] = [
   {
-    title: "Home",
+    title: "Customers",
     icon: <IconHome />,
-    path: "/home",
+    path: "/customers",
     role: ["employee", "admin"],
   },
   {

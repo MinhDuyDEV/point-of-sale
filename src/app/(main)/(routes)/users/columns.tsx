@@ -76,7 +76,9 @@ export const columns: ColumnDef<UserColumn>[] = [
       <div
         className={cn(
           "capitalize w-fit p-1 rounded-md",
-          row.getValue("IsActive") === true ? "bg-green-400" : "bg-red-400"
+          row.getValue("IsActive") === true
+            ? "bg-green-100 text-green-600"
+            : "bg-red-100 text-red-600"
         )}
       >
         {row.getValue("IsActive") === true ? (
@@ -94,7 +96,9 @@ export const columns: ColumnDef<UserColumn>[] = [
       <div
         className={cn(
           "capitalize w-fit p-1 rounded-md shadow-md",
-          row.getValue("IsLocked") === true ? "bg-red-400" : "bg-green-400"
+          row.getValue("IsLocked") === true
+            ? "bg-red-100 text-red-600"
+            : "bg-green-100 text-green-600"
         )}
       >
         {row.getValue("IsLocked") === true ? (
@@ -112,7 +116,9 @@ export const columns: ColumnDef<UserColumn>[] = [
       <div
         className={cn(
           "capitalize w-fit p-1 rounded-md",
-          row.getValue("IsOnline") === true ? "bg-green-400" : "bg-red-400"
+          row.getValue("IsOnline") === true
+            ? "bg-green-100 text-green-600"
+            : "bg-red-100 text-red-600"
         )}
       >
         {row.getValue("IsOnline") === true ? (

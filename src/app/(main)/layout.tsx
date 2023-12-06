@@ -12,16 +12,16 @@ import { User } from "@/types/general.types";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>();
+  const token = getCookie("token");
   useEffect(() => {
-    if (!hasCookie("token")) {
+    if (!token) {
       return redirect("/sign-in");
     }
     const user = getCookie("user");
     if (user) {
-      setUser(JSON.parse(user?.toString()));
+      setUser(JSON.parse(user));
     }
-  }, []);
-  console.log("🚀 ~ Layout ~ user?.Profile_Picture:", user?.Profile_Picture);
+  }, [token]);
   return (
     <div className="w-full h-full">
       <motion.div

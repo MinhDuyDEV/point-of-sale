@@ -10,7 +10,7 @@ const LayoutAuth = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (hasCookie("token")) {
-      router.push("/home");
+      router.push("/customer");
     } else {
       router.push("/sign-in");
     }

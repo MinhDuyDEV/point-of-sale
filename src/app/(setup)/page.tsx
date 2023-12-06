@@ -16,7 +16,7 @@ const SetupPage = () => {
   //   console.log("🚀 ~ SetupPage ~ user:", user);
   // }, [user]);
   if (hasCookie("token")) {
-    return redirect("/home");
+    return redirect("/customers");
   } else if (hasCookie("token")) {
     return <div>change password</div>;
   } else {

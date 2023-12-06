@@ -21,27 +21,24 @@ import {
 } from "@/components/ui/form";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { Product } from "@/types/general.types";
+import { Customer } from "@/types/general.types";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { getCookie } from "cookies-next";
 
 const formSchema = z.object({
-  Name: z.string().min(1),
-  Category: z.string().min(1),
-  ImportPrice: z.coerce.number().min(0),
-  RetailPrice: z.coerce.number().min(0),
-  Quantity: z.coerce.number().min(0),
-  Image: z.object({ url: z.string() }).array(),
+  FullName: z.string().min(1),
+  PhoneNumber: z.string().min(1),
+  Address: z.string().min(1),
 });
 
-type ProductFormValues = z.infer<typeof formSchema>;
+type CustomerFormValues = z.infer<typeof formSchema>;
 
-interface ProductFormProps {
-  initialData: Product | null;
+interface CustomerFormProps {
+  initialData: Customer | null;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
+const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
   console.log("🚀 ~ initialData:", initialData);
   const token = getCookie("token");
   const params = useParams();
@@ -50,41 +47,37 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const title = initialData ? "Edit" : "Create product";
   const description = initialData ? "Edit a product" : "Add a new product";
-  const toastMessage = initialData ? "Product updated" : "Product created";
+  const toastMessage = initialData ? "Customer updated" : "Customer created";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<ProductFormValues>({
+  const form = useForm<CustomerFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Name: initialData?.Name || "",
-      Category: initialData?.Category || "",
-      Image: initialData?.Image || [],
-      ImportPrice: initialData?.ImportPrice || 0,
-      RetailPrice: initialData?.RetailPrice || 0,
-      Quantity: initialData?.Quantity || 0,
+      FullName: "",
+      PhoneNumber: "",
+      Address: "",
     },
   });
-  const onSubmit = async (data: ProductFormValues) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
+  const onSubmit = async (data: CustomerFormValues) => {
     try {
       setLoading(true);
-      if (initialData) {
-        await axios.patch(`/api/products/${params.productId}`, data, {
-          baseURL: "http://localhost:3000",
-          headers: {
-            "Content-Type": "Application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      } else {
-        await axios.post(`/api/products`, data, {
-          baseURL: "http://localhost:3000",
-          headers: {
-            "Content-Type": "Application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      }
+      // if (initialData) {
+      //   await axios.patch(`/api/products/${params.productId}`, data, {
+      //     baseURL: "http://localhost:3000",
+      //     headers: {
+      //       "Content-Type": "Application/json",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      // } else {
+      //   await axios.post(`/api/products`, data, {
+      //     baseURL: "http://localhost:3000",
+      //     headers: {
+      //       "Content-Type": "Application/json",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      // }
       console.log("🚀 ~ onSubmit ~ data:", data);
       router.refresh();
       toast.success(toastMessage);
@@ -106,7 +99,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         },
       });
       router.refresh();
-      toast.success("Product deleted.");
+      toast.success("Customer deleted.");
       router.push(`/products`);
     } catch (error) {
       toast.error(
@@ -148,35 +141,28 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         >
           <FormField
             control={form.control}
-            name="Image"
+            name="FullName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Images</FormLabel>
+                <FormLabel>Customer name</FormLabel>
                 <FormControl>
-                  <ImageUpload
-                    value={field.value.map((image) => image.url)}
+                  <Input
                     disabled={loading}
-                    onChange={(url) =>
-                      field.onChange([...field.value, { url }])
-                    }
-                    onRemove={(url) =>
-                      field.onChange([
-                        ...field.value.filter((current) => current.url !== url),
-                      ])
-                    }
-                  />
+                    placeholder="Name..."
+                    {...field}
+                  ></Input>
                 </FormControl>
-                <FormMessage />
+                <FormMessage></FormMessage>
               </FormItem>
             )}
           ></FormField>
           <div className="grid grid-cols-2 gap-8">
             <FormField
               control={form.control}
-              name="Name"
+              name="PhoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product name</FormLabel>
+                  <FormLabel>Customer name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
@@ -190,67 +176,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             ></FormField>
             <FormField
               control={form.control}
-              name="Category"
+              name="Address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product category</FormLabel>
+                  <FormLabel>Customer category</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="Category..."
-                      {...field}
-                    ></Input>
-                  </FormControl>
-                  <FormMessage></FormMessage>
-                </FormItem>
-              )}
-            ></FormField>
-          </div>
-          <div className="grid grid-cols-3 gap-8">
-            <FormField
-              control={form.control}
-              name="ImportPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Import Price</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Price..."
-                      {...field}
-                    ></Input>
-                  </FormControl>
-                  <FormMessage></FormMessage>
-                </FormItem>
-              )}
-            ></FormField>
-            <FormField
-              control={form.control}
-              name="RetailPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Retail Price</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Price..."
-                      {...field}
-                    ></Input>
-                  </FormControl>
-                  <FormMessage></FormMessage>
-                </FormItem>
-              )}
-            ></FormField>
-            <FormField
-              control={form.control}
-              name="Quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantity</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Quantity..."
                       {...field}
                     ></Input>
                   </FormControl>
@@ -268,4 +201,4 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   );
 };
 
-export default ProductForm;
+export default CustomerForm;

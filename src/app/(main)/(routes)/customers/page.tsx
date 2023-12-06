@@ -14,14 +14,13 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function DemoPage() {
-  // const data = await getData();
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const token = getCookie("token");
     async function fetchProduct() {
       try {
-        const response = await axios.get("/api/products", {
+        const response = await axios.get("/api/customers", {
           baseURL: "http://localhost:3000",
           headers: {
             "Content-Type": "Application/json",
@@ -29,7 +28,6 @@ export default function DemoPage() {
           },
         });
         setData(response.data);
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
       } catch (error) {
         console.log(error);
       }
@@ -47,16 +45,12 @@ export default function DemoPage() {
     >
       <div className="flex items-center justify-between">
         <Heading
-          title={`Products (${data.length})`}
-          description="Manage product for your store"
+          title={`Customers (${data.length})`}
+          description="Manage customer for your store"
         ></Heading>
-        <Button onClick={() => router.push(`/products/new`)}>
-          <Plus className="w-4 h-4 mr-2"></Plus>
-          Add new
-        </Button>
       </div>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey="Name" />
+      <DataTable columns={columns} data={data} searchKey="PhoneNumber" />
     </motion.div>
   );
 }

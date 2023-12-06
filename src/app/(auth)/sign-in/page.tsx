@@ -21,6 +21,7 @@ import Link from "next/link";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   Email: z.string(),
@@ -31,7 +32,7 @@ export default function SignInPage() {
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
-      return redirect("/home");
+      return redirect("/customers");
     }
   }, []);
 
@@ -45,7 +46,6 @@ export default function SignInPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("🚀 ~ onSubmit ~ values:", values);
     try {
       axios
         .post("http://localhost:3000/api/users/login", {
@@ -56,12 +56,13 @@ export default function SignInPage() {
           const user = response.data.user;
           setCookie("user", user);
           setCookie("token", token);
+          toast.success("Login successfully");
           router.push("/");
         })
         .catch(function (error) {
           console.log("🚀 ~ onSubmit ~ error:", error);
         });
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   }
