@@ -21,6 +21,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       setUser(JSON.parse(user?.toString()));
     }
   }, []);
+  console.log("🚀 ~ Layout ~ user?.Profile_Picture:", user?.Profile_Picture);
   return (
     <div className="w-full h-full">
       <motion.div

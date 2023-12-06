@@ -111,10 +111,10 @@ const PointOfSalePage = () => {
               </div>
             </div>
             <Button
-              onClick={() => router.push("/cart")}
+              onClick={() => router.push("/checkout")}
               className="w-full mt-6"
             >
-              Go to cart
+              Checkout
             </Button>
           </div>
         </motion.div>

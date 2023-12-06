@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 
-const UserPage = ({ params }: { params: { userId: string } }) => {
+const ProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [data, setData] = useState([]);
   const token = getCookie("token");
@@ -28,14 +28,11 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log("🚀 ~ UserPage ~ user:", user);
+  console.log("🚀 ~ ProfilePage ~ user:", user);
   useEffect(() => {
-    if (!user) {
-      return router.push("/sign-in");
-    }
-    async function fetchProduct() {
+    async function fetchProduct(id: string) {
       try {
-        const response = await axios.get(`/api/orders/employee/${user?.id}`, {
+        const response = await axios.get(`/api/orders/employee/${id}`, {
           baseURL: "http://localhost:3000",
           headers: {
             "Content-Type": "Application/json",
@@ -48,8 +45,46 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
         console.log(error);
       }
     }
-    fetchProduct();
+    if (user) {
+      console.log("🚀 ~ useEffect ~ user:", user.id);
+      fetchProduct(user.id);
+    }
   }, [router, token, user]);
+  if (user?.Role == "admin") {
+    return (
+      <motion.div
+        className="flex justify-between h-auto gap-24 px-8 py-6 mx-auto md:justify-start"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.175 }}
+      >
+        <div className="flex items-center justify-center flex-shrink-0 w-full gap-40 p-6 mb-8 shadow-lg rounded-xl bg-slate-50">
+          <div className="flex items-center justify-center w-[200px] h-[200px] gap-x-3">
+            <Avatar className="w-48 h-48">
+              <AvatarImage src={user?.Profile_Picture} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </div>
+          <div className="flex flex-col items-start justify-center p-4 gap-y-4">
+            <div className="flex items-start justify-center gap-x-3">
+              <UserIcon />
+              <h3 className="text-lg text-zinc-800">{user?.Fullname}</h3>
+            </div>
+            <div className="flex items-start justify-center gap-x-3">
+              <AtSign />
+              <h3 className="text-lg text-zinc-800">{user?.Email}</h3>
+            </div>
+            {user?.Role !== "admin" && (
+              <div className="flex items-start justify-center gap-x-3">
+                <BaggageClaim />
+                <h3 className="text-lg text-zinc-800">{user?.Orders.length}</h3>
+              </div>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
   return (
     <motion.div
       className="flex justify-between h-auto gap-24 px-8 py-6 mx-auto md:justify-start"
@@ -86,4 +121,4 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
   );
 };
 
-export default UserPage;
+export default ProfilePage;

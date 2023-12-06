@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   password: z.string(),
@@ -38,14 +39,14 @@ export default function SignInPage() {
       router.push("/home");
       console.log(values);
     } else {
-      console.log("Password not match");
+      toast.error("Password confirm not match");
     }
   }
 
   return (
     <div className="flex flex-col items-center justify-center mx-auto mt-20">
       <Label className="mb-10 text-4xl font-semibold text-center">
-        Sign in
+        Change password
       </Label>
       <div className="w-[400px] border border-zinc-400 px-3 py-5 rounded-2xl">
         <Form {...form}>
@@ -55,7 +56,7 @@ export default function SignInPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Enter your password"

@@ -76,7 +76,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
         ></Heading>
         <div className="flex items-center justify-center gap-x-3">
           <Avatar className="w-12 h-12">
-            <AvatarImage src="https://source.unsplash.com/random" />
+            <AvatarImage src={user?.Profile_Picture} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <Button

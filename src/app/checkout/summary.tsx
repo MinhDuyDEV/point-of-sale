@@ -2,18 +2,20 @@
 
 import axios from "axios";
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { toast } from "react-hot-toast";
 import CartItem from "./cart-item";
+import { CornerDownLeft } from "lucide-react";
 
 const Summary = () => {
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
+  const router = useRouter();
   const cart = useCart();
   useEffect(() => {
     if (searchParams.get("success")) {
@@ -26,24 +28,12 @@ const Summary = () => {
     }
   }, [searchParams, removeAll]);
 
-  const totalPrice = items.reduce((total, item) => {
-    return total + Number(item.RetailPrice);
+  const totalPrice = cart.items.reduce((total, item) => {
+    return total + Number(item.RetailPrice) * item.Flag;
   }, 0);
 
-  const onCheckout = async () => {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
-      {
-        productIds: items.map((item) => item._id),
-      }
-    );
-
-    window.location = response.data.url;
-  };
-
   return (
-    <div className="px-4 py-6 mt-16 rounded-lg bg-gray-50 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
-      {/* <h2 className="text-lg font-medium text-gray-900">Order summary</h2> */}
+    <div className="px-4 py-6 mt-0 bg-gray-100 rounded-lg sm:p-6 lg:p-8">
       <div className="lg:col-span-7">
         {cart.items.length === 0 && (
           <p className="text-neutral-500">No items added to cart.</p>
@@ -61,11 +51,11 @@ const Summary = () => {
         </div>
       </div>
       <Button
-        onClick={onCheckout}
-        disabled={items.length === 0}
-        className="w-full mt-6"
+        onClick={() => router.push("/point-of-sale")}
+        className="flex items-center w-full gap-2 mt-6"
       >
-        Checkout
+        <CornerDownLeft />
+        Back to cart
       </Button>
     </div>
   );
