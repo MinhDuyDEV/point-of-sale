@@ -47,7 +47,6 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
     },
   });
   const onSubmit = async (data: UserFormValues) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     try {
       setLoading(true);
       // await axios.post(`/api/users/register`, data, {

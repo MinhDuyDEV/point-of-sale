@@ -25,6 +25,7 @@ interface CellActionProps {
 }
 
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
+  const params = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -45,7 +46,11 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => router.push(`/users/${data.id}`)}>
+          <DropdownMenuItem
+            onClick={() =>
+              router.push(`/users/${params.userId}/orders/${data._id}`)
+            }
+          >
             <BookUser className="w-4 h-4 mr-2" />
             Order details
           </DropdownMenuItem>

@@ -29,7 +29,6 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const onCopy = (data: any) => {
-    console.log("🚀 ~ onCopy ~ data:", data);
     setCookie("customer", data);
     toast.success("Billboard Id copied to the clipboard.");
   };

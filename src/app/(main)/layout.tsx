@@ -3,25 +3,36 @@
 import Logo from "@/components/Logo";
 import Sidebar from "@/components/Sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
 import { getCookie, hasCookie } from "cookies-next";
 import { User } from "@/types/general.types";
+import axios from "axios";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>();
+  const router = useRouter();
   const token = getCookie("token");
   useEffect(() => {
     if (!token) {
       return redirect("/sign-in");
     }
-    const user = getCookie("user");
-    if (user) {
-      setUser(JSON.parse(user));
+    async function getProfile() {
+      const response = await axios.get(`/api/users/profiles`, {
+        baseURL: "http://localhost:3000",
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("🚀 ~ fetchProfile ~ response.data:", response.data);
+      setUser(response.data);
     }
+    getProfile();
   }, [token]);
+  console.log("🚀 ~ fetchProfile ~ user:", user);
   return (
     <div className="w-full h-full">
       <motion.div
@@ -36,7 +47,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <SearchBar></SearchBar>
         </div>
         <div className="flex items-center justify-center gap-x-4">
-          <p className="text-2xl capitalize font-semibold">{user?.Fullname}</p>
+          <p className="text-2xl font-semibold capitalize">{user?.Fullname}</p>
           <Avatar className="w-12 h-12">
             <AvatarImage src={user?.Profile_Picture} alt="avatar" />
             <AvatarFallback>CN</AvatarFallback>

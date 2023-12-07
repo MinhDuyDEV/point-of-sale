@@ -12,7 +12,6 @@ interface ProductListProps {
 }
 
 const ProductList = ({ data }: ProductListProps) => {
-  console.log(data);
   return (
     <motion.div
       className="space-y-4"

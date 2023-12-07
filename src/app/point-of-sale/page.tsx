@@ -27,7 +27,6 @@ const PointOfSalePage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProduct ~ response:", response.data);
         setData(response.data);
       } catch (error) {
         console.log(error);

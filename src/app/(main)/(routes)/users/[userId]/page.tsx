@@ -55,12 +55,16 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        // console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
       }
     }
+
+    fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
     async function fetchOrder() {
       try {
         const response = await axios.get(
@@ -74,15 +78,12 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
           }
         );
         setData(response.data.orders);
-        console.log("🚀 ~ fetchOrder ~ response.data:", response.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchOrder();
-    fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params.userId, token]);
   console.log(data);
   return (
     <motion.div
@@ -111,7 +112,11 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
         </div>
       </div>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey="Customer" />
+      <DataTable
+        columns={columns}
+        data={data}
+        searchKey="CustomerPhoneNumber"
+      />
     </motion.div>
   );
 };

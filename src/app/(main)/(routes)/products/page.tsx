@@ -33,7 +33,6 @@ export default function DemoPage() {
           },
         });
         setData(response.data);
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
       } catch (error) {
         console.log(error);
       }

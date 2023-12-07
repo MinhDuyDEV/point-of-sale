@@ -39,7 +39,6 @@ interface CustomerFormProps {
 }
 
 const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
-  console.log("🚀 ~ initialData:", initialData);
   const token = getCookie("token");
   const params = useParams();
   const router = useRouter();
@@ -78,7 +77,6 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
       //     },
       //   });
       // }
-      console.log("🚀 ~ onSubmit ~ data:", data);
       router.refresh();
       toast.success(toastMessage);
       router.push(`/products`);

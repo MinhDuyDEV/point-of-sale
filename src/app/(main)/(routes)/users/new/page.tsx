@@ -20,7 +20,6 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);

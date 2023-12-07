@@ -48,10 +48,6 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <BookUser className="w-4 h-4 mr-2" />
             User details
           </DropdownMenuItem>
-          {/* <DropdownMenuItem onClick={() => onLock(data.id)}>
-            <Lock className="w-4 h-4 mr-2" />
-            Lock
-          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

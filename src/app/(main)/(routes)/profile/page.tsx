@@ -13,75 +13,63 @@ import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
-  // const [data, setData] = useState({});
   const token = getCookie("token");
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const info = getCookie("user");
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (info) {
-      setUser(JSON.parse(info));
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    async function fetchProfile(id: string) {
+    async function fetchProfile() {
       try {
-        const response = await axios.get(`/api/users/profiles/${id}`, {
+        const response = await axios.get(`/api/users/profiles`, {
           baseURL: "http://localhost:3000",
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProfile ~ response.data:", response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
       }
     }
-    if (user) {
-      fetchProfile(user.id);
-    }
-  }, [router, token, user]);
+    fetchProfile();
+  }, [token]);
   if (!user) {
     return null;
-  }
-  return (
-    <motion.div
-      className="flex justify-between h-auto gap-24 px-8 py-6 mx-auto md:justify-start"
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.175 }}
-    >
-      <div className="flex items-center justify-center flex-shrink-0 w-full gap-40 p-6 mb-8 shadow-lg rounded-xl bg-slate-50">
-        <div className="flex items-center justify-center w-[200px] h-[200px] gap-x-3">
-          <Avatar className="w-48 h-48 cursor-pointer">
-            <AvatarImage src={user?.Profile_Picture} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </div>
-        <div className="flex flex-col items-start justify-center p-4 gap-y-4">
-          <div className="flex items-start justify-center gap-x-3">
-            <UserIcon />
-            <h3 className="text-lg text-zinc-800">{user?.Fullname}</h3>
+  } else {
+    return (
+      <motion.div
+        className="flex justify-between h-auto gap-24 px-8 py-6 mx-auto md:justify-start"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.175 }}
+      >
+        <div className="flex items-center justify-center flex-shrink-0 w-full gap-40 p-6 mb-8 shadow-lg rounded-xl bg-slate-50">
+          <div className="flex items-center justify-center w-[200px] h-[200px] gap-x-3">
+            <Avatar className="w-48 h-48 cursor-pointer">
+              <AvatarImage src={user?.Profile_Picture} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           </div>
-          <div className="flex items-start justify-center gap-x-3">
-            <AtSign />
-            <h3 className="text-lg text-zinc-800">{user?.Email}</h3>
-          </div>
-          {user?.Role !== "admin" && (
+          <div className="flex flex-col items-start justify-center p-4 gap-y-4">
             <div className="flex items-start justify-center gap-x-3">
-              <BaggageClaim />
-              <h3 className="text-lg text-zinc-800">{user?.Orders.length}</h3>
+              <UserIcon />
+              <h3 className="text-lg text-zinc-800">{user?.Fullname}</h3>
             </div>
-          )}
+            <div className="flex items-start justify-center gap-x-3">
+              <AtSign />
+              <h3 className="text-lg text-zinc-800">{user?.Email}</h3>
+            </div>
+            {user?.Role !== "admin" && (
+              <div className="flex items-start justify-center gap-x-3">
+                <BaggageClaim />
+                <h3 className="text-lg text-zinc-800">{user?.Orders.length}</h3>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </motion.div>
-  );
+      </motion.div>
+    );
+  }
 };
 
 export default ProfilePage;

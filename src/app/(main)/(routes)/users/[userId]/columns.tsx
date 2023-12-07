@@ -6,16 +6,22 @@ import CellAction from "./cell-action";
 export type OrderColumn = {
   AmountPaidByCustomer: number;
   ChangeReturnedToCustomer: number;
-  Customer: string;
   TotalAmount: number;
   OrderDetails: [];
+  OrderDetailSize: number;
+  CustomerName: string;
+  CustomerPhoneNumber: string;
   _id: string;
 };
 
 export const columns: ColumnDef<OrderColumn>[] = [
   {
-    accessorKey: "Customer",
+    accessorKey: "CustomerName",
     header: "Customer",
+  },
+  {
+    accessorKey: "CustomerPhoneNumber",
+    header: "Phone Number",
   },
   {
     accessorKey: "AmountPaidByCustomer",
@@ -30,9 +36,11 @@ export const columns: ColumnDef<OrderColumn>[] = [
     header: "createdAt",
   },
   {
-    accessorKey: "OrderDetails",
+    accessorKey: "OrderDetailSize",
     header: "Quantity",
-    cell: ({ row }) => <div className="lowercase">test</div>,
+    cell: ({ row }) => (
+      <div className="">{row.getValue("OrderDetailSize")}</div>
+    ),
   },
   {
     id: "actions",

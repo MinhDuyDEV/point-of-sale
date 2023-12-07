@@ -42,7 +42,6 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
-  console.log("🚀 ~ initialData:", initialData);
   const token = getCookie("token");
   const params = useParams();
   const router = useRouter();
@@ -65,7 +64,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     },
   });
   const onSubmit = async (data: ProductFormValues) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     try {
       setLoading(true);
       if (initialData) {
@@ -85,7 +83,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
           },
         });
       }
-      console.log("🚀 ~ onSubmit ~ data:", data);
       router.refresh();
       toast.success(toastMessage);
       router.push(`/products`);
