@@ -23,7 +23,7 @@ const CartItem = ({ data }: CartItemProps) => {
       <div className="relative w-16 h-16 overflow-hidden rounded-md sm:h-24 sm:w-24">
         <Image
           fill
-          src={data.Image}
+          src={data.Image?.[0]?.url}
           alt=""
           className="object-cover object-center"
         />

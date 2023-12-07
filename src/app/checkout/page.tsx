@@ -24,6 +24,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { ScanBarcode } from "lucide-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { getCookie } from "cookies-next";
 
 const formSchema = z.object({
   Fullname: z.string().min(2, {
@@ -43,6 +46,7 @@ export const revalidate = 0;
 
 const CartPage = () => {
   const cart = useCart();
+  const token = getCookie("token");
   const totalPrice = cart.items.reduce((total, item) => {
     return total + Number(item.RetailPrice) * item.Flag;
   }, 0);
@@ -65,13 +69,23 @@ const CartPage = () => {
   if (!isMounted) {
     return null;
   }
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("🚀 ~ CartPage ~ cart:", cart.items);
-
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    router.push("/payment");
+  async function onSubmit(Customer: z.infer<typeof formSchema>) {
+    const data = { ListProduct: cart.items, Customer };
+    try {
+      axios.post("/api/orders", data, {
+        baseURL: "http://localhost:3000",
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Created Order successfully");
+      router.refresh();
+      router.push("/payment");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    console.log(data);
   }
   return (
     <div className="bg-white">

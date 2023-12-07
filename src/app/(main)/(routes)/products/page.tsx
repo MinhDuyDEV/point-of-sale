@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/types/general.types";
+import { Product, User } from "@/types/general.types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import axios from "axios";
@@ -14,10 +14,14 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function DemoPage() {
-  // const data = await getData();
+  const router = useRouter();
   const [data, setData] = useState([]);
-
+  const [user, setUser] = useState<User>();
   useEffect(() => {
+    const info = getCookie("user");
+    if (info) {
+      setUser(JSON.parse(info));
+    }
     const token = getCookie("token");
     async function fetchProduct() {
       try {
@@ -37,7 +41,6 @@ export default function DemoPage() {
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const router = useRouter();
   return (
     <motion.div
       className="h-screen px-8 py-10 mx-auto"

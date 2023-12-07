@@ -1,7 +1,5 @@
-import { Product } from "@/types/types";
+import { Product } from "@/types/general.types";
 import { create } from "zustand";
-
-// import { Product } from '@/types';
 
 interface PreviewModalStore {
   isOpen: boolean;

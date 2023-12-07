@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
@@ -55,6 +55,16 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
       setOpen(false);
     }
   };
+  const [user, setUser] = useState<any>({});
+  useEffect(() => {
+    const info = getCookie("user");
+    if (info) {
+      setUser(JSON.parse(info));
+    }
+  }, []);
+  if (user?.Role !== "admin") {
+    return null;
+  }
   return (
     <>
       <AlertModal

@@ -39,7 +39,7 @@ export type Image = {
 
 export type Customer = {
   _id: string;
-  FullName: string;
+  Fullname: string;
   PhoneNumber: string;
   Address: string;
 };

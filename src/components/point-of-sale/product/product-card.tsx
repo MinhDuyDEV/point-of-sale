@@ -30,7 +30,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
       {/* Image & actions */}
       <div className="relative bg-gray-100 aspect-square rounded-xl">
         <Image
-          src={data.Image[0]}
+          src={data.Image?.[0]?.url}
           alt=""
           fill
           className="object-cover rounded-md aspect-square"

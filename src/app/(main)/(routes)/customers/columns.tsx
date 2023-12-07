@@ -7,7 +7,7 @@ import { Save, ShieldCheck, ShieldX } from "lucide-react";
 import toast from "react-hot-toast";
 
 export type ProductColumn = {
-  FullName: string;
+  Fullname: string;
   PhoneNumber: string;
   Address: string;
   id: string;
@@ -15,8 +15,8 @@ export type ProductColumn = {
 
 export const columns: ColumnDef<ProductColumn>[] = [
   {
-    accessorKey: "FullName",
-    header: "FullName",
+    accessorKey: "Fullname",
+    header: "Full name",
   },
   {
     accessorKey: "PhoneNumber",
