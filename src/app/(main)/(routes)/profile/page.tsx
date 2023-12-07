@@ -58,7 +58,7 @@ const ProfilePage = () => {
     >
       <div className="flex items-center justify-center flex-shrink-0 w-full gap-40 p-6 mb-8 shadow-lg rounded-xl bg-slate-50">
         <div className="flex items-center justify-center w-[200px] h-[200px] gap-x-3">
-          <Avatar className="w-48 h-48">
+          <Avatar className="w-48 h-48 cursor-pointer">
             <AvatarImage src={user?.Profile_Picture} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
