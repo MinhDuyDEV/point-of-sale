@@ -12,9 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Lock, Unlock } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 const UserPage = ({ params }: { params: { userId: string } }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [data, setData] = useState([]);
   const token = getCookie("token");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -52,7 +55,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
+        // console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -70,6 +73,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
             },
           }
         );
+        setData(response.data.orders);
         console.log("🚀 ~ fetchOrder ~ response.data:", response.data);
       } catch (error) {
         console.log(error);
@@ -79,7 +83,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log("🚀 ~ UserPage ~ user:", user);
+  console.log(data);
   return (
     <motion.div
       className="h-auto px-8 py-6 mx-auto"
@@ -107,6 +111,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
         </div>
       </div>
       <Separator />
+      <DataTable columns={columns} data={data} searchKey="Customer" />
     </motion.div>
   );
 };

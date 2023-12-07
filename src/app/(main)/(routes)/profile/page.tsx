@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState({});
   const token = getCookie("token");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -27,26 +27,28 @@ const ProfilePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    async function fetchProduct(id: string) {
+    async function fetchProfile(id: string) {
       try {
-        const response = await axios.get(`/api/orders/employee/${id}`, {
+        const response = await axios.get(`/api/users/profiles/${id}`, {
           baseURL: "http://localhost:3000",
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
-        setData(response.data);
+        console.log("🚀 ~ fetchProfile ~ response.data:", response.data);
+        setUser(response.data);
       } catch (error) {
         console.log(error);
       }
     }
     if (user) {
-      fetchProduct(user.id);
+      fetchProfile(user.id);
     }
   }, [router, token, user]);
-
+  if (!user) {
+    return null;
+  }
   return (
     <motion.div
       className="flex justify-between h-auto gap-24 px-8 py-6 mx-auto md:justify-start"

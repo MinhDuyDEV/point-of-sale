@@ -38,8 +38,8 @@ const formSchema = z.object({
   Address: z.string().min(2, {
     message: "Address must be at least 2 characters.",
   }),
-  AmountPaidByCustomer: z.number(),
-  TotalAmount: z.number(),
+  AmountPaidByCustomer: z.coerce.number().min(0),
+  TotalAmount: z.coerce.number().min(0),
 });
 
 export const revalidate = 0;
@@ -170,6 +170,7 @@ const CartPage = () => {
                           <FormLabel>AmountPaidByCustomer</FormLabel>
                           <FormControl>
                             <Input
+                              type="number"
                               placeholder="AmountPaidByCustomer"
                               {...field}
                             />

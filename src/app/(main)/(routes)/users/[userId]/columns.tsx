@@ -9,17 +9,13 @@ export type OrderColumn = {
   Customer: string;
   TotalAmount: number;
   OrderDetails: [];
-  OrderDetailSize: number;
-  Quantity: number;
-  CustomerName: string;
-  id: string;
+  _id: string;
 };
 
 export const columns: ColumnDef<OrderColumn>[] = [
   {
-    accessorKey: "CustomerName",
+    accessorKey: "Customer",
     header: "Customer",
-    cell: ({ row }) => <div>{row.getValue("CustomerName")}</div>,
   },
   {
     accessorKey: "AmountPaidByCustomer",
@@ -34,11 +30,9 @@ export const columns: ColumnDef<OrderColumn>[] = [
     header: "createdAt",
   },
   {
-    accessorKey: "OrderDetailSize",
-    header: "Product",
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("OrderDetailSize")}</div>
-    ),
+    accessorKey: "OrderDetails",
+    header: "Quantity",
+    cell: ({ row }) => <div className="lowercase">test</div>,
   },
   {
     id: "actions",

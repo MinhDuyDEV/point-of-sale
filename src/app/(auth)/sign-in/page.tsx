@@ -53,14 +53,14 @@ export default function SignInPage() {
         })
         .then(function (response) {
           const token = response.data.token;
+          setCookie("token", token);
           const user = response.data.user;
           setCookie("user", user);
-          setCookie("token", token);
           toast.success("Login successfully");
           router.push("/");
         })
-        .catch(function (error) {
-          console.log("🚀 ~ onSubmit ~ error:", error);
+        .catch((response) => {
+          toast.error("Wrong username or password");
         });
     } catch (error: any) {
       console.log(error);

@@ -53,10 +53,12 @@ export default function DemoPage() {
           title={`Products (${data.length})`}
           description="Manage product for your store"
         ></Heading>
-        <Button onClick={() => router.push(`/products/new`)}>
-          <Plus className="w-4 h-4 mr-2"></Plus>
-          Add new
-        </Button>
+        {user?.Role !== "employee" && (
+          <Button onClick={() => router.push(`/products/new`)}>
+            <Plus className="w-4 h-4 mr-2"></Plus>
+            Add new
+          </Button>
+        )}
       </div>
       <Separator />
       <DataTable columns={columns} data={data} searchKey="Name" />

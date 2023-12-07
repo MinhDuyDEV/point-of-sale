@@ -33,17 +33,16 @@ const MyOrdersPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("🚀 ~ fetchProduct ~ response.data:", response.data);
-        setData(response.data);
+        setData(response.data.orders);
       } catch (error) {
         console.log(error);
       }
     }
     if (user) {
-      console.log("🚀 ~ useEffect ~ user.id:", user.id);
       fetchProduct(user.id);
     }
   }, [router, token, user]);
+
   return (
     <div>
       <DataTable columns={columns} data={data} searchKey="Customer" />
