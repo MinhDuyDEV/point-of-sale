@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import axios from "axios";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
@@ -29,14 +29,40 @@ const formSchema = z.object({
 });
 
 export default function SignInPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
       return redirect("/customers");
     }
-  }, []);
+    const tokenLogin = searchParams.get("token");
+    if (tokenLogin) {
+      axios
+        .post(
+          `/api/sign-in`,
+          { token: tokenLogin },
+          {
+            baseURL: "http://localhost:3000",
+            headers: {
+              "Content-Type": "Application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            router.push("/first-sign-in");
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            toast.error("Token is invalid");
+            router.push("/toast");
+          }
+        });
+    }
+  }, [router, searchParams]);
 
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,7 +86,7 @@ export default function SignInPage() {
           router.push("/");
         })
         .catch((response) => {
-          toast.error("Wrong username or password");
+          toast.error(response.response.data.message);
         });
     } catch (error: any) {
       console.log(error);

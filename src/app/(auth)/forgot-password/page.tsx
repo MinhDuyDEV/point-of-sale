@@ -19,14 +19,14 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
 const formSchema = z.object({
-  email: z.string(),
+  Email: z.string(),
 });
 
 export default function ForgotPasswordPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      Email: "",
     },
   });
 
@@ -37,14 +37,14 @@ export default function ForgotPasswordPage() {
   return (
     <div className="flex flex-col items-center justify-center mx-auto mt-20">
       <Label className="mb-10 text-4xl font-semibold text-center">
-        Sign in
+        Forgot password
       </Label>
       <div className="w-[400px] border border-zinc-400 px-3 py-5 rounded-2xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="email"
+              name="Email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>

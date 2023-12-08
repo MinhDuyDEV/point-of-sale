@@ -1,27 +1,19 @@
 "use client";
 
-import { redirect, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCookie, hasCookie, setCookie } from "cookies-next";
-import { User } from "@/types/general.types";
+import { useEffect } from "react";
+import { useStoreModal } from "@/hooks/use-store-modal";
+
 const SetupPage = () => {
-  const params = useSearchParams();
-  const [user, setUser] = useState<User | null>(null);
-  // setCookie("token", params.get("token"));
-  // useEffect(() => {
-  //   const info = getCookie("user");
-  //   if (info) {
-  //     setUser(JSON.parse(info));
-  //   }
-  //   console.log("🚀 ~ SetupPage ~ user:", user);
-  // }, [user]);
-  if (hasCookie("token")) {
-    return redirect("/customers");
-  } else if (hasCookie("token")) {
-    return <div>change password</div>;
-  } else {
-    return redirect("/sign-in");
-  }
+  const onOpen = useStoreModal((state) => state.onOpen);
+  const isOpen = useStoreModal((state) => state.isOpen);
+
+  useEffect(() => {
+    if (!isOpen) {
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+
+  return null;
 };
 
 export default SetupPage;
