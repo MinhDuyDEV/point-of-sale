@@ -136,6 +136,7 @@ export default function SettingPage() {
                         <FormLabel>Current password</FormLabel>
                         <FormControl>
                           <Input
+                            type="password"
                             disabled={loading}
                             placeholder="Password..."
                             {...field}
@@ -153,6 +154,7 @@ export default function SettingPage() {
                         <FormLabel>New password</FormLabel>
                         <FormControl>
                           <Input
+                            type="password"
                             disabled={loading}
                             placeholder="New password..."
                             {...field}

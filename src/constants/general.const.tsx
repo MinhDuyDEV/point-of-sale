@@ -16,16 +16,16 @@ export const sidebarLinks: TSidebarLink[] = [
     role: ["employee", "admin"],
   },
   {
-    title: "POS",
-    icon: <IconHome />,
-    path: "/point-of-sale",
-    role: ["employee", "admin"],
-  },
-  {
     title: "Dashboard",
     icon: <IconChart />,
     path: "/dashboard",
     role: ["admin"],
+  },
+  {
+    title: "POS",
+    icon: <IconHome />,
+    path: "/point-of-sale",
+    role: ["employee"],
   },
   {
     title: "Users",

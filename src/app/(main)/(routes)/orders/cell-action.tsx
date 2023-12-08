@@ -45,7 +45,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => router.push(`/users/${data.id}`)}>
+          <DropdownMenuItem onClick={() => router.push(`/orders/${data._id}`)}>
             <BookUser className="w-4 h-4 mr-2" />
             Order details
           </DropdownMenuItem>

@@ -1,16 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import {
-  BookA,
-  Copy,
-  Edit,
-  MoreHorizontal,
-  SaveAll,
-  Trash,
-} from "lucide-react";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { BookUser, Lock, MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -23,11 +16,12 @@ import {
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { ProductColumn } from "./columns";
-import { setCookie } from "cookies-next";
+// import { UserColumn } from "./columns";
+import { getCookie } from "cookies-next";
+import { OrderColumn } from "./columns";
 
 interface CellActionProps {
-  data: ProductColumn;
+  data: OrderColumn;
 }
 
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -35,11 +29,6 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const onCopy = (data: any) => {
-    setCookie("customer", data);
-    toast.success("Billboard Id copied to the clipboard.");
-  };
-
   return (
     <>
       <AlertModal
@@ -58,18 +47,12 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => onCopy(data)}
-            className="cursor-pointer"
+            onClick={() =>
+              router.push(`/customers/${params.customerId}/orders/${data._id}`)
+            }
           >
-            <SaveAll className="w-4 h-4 mr-2" />
-            Save
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => router.push(`/customers/${data.id}/orders`)}
-            className="cursor-pointer"
-          >
-            <BookA className="w-4 h-4 mr-2" />
-            Orders detail
+            <BookUser className="w-4 h-4 mr-2" />
+            Details
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

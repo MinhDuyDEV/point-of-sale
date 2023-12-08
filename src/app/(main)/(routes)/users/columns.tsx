@@ -96,12 +96,12 @@ export const columns: ColumnDef<UserColumn>[] = [
       <div
         className={cn(
           "capitalize w-fit p-1 rounded-md shadow-md",
-          row.getValue("IsLocked") === true
+          row.getValue("IsLocked") === false
             ? "bg-red-100 text-red-600"
             : "bg-green-100 text-green-600"
         )}
       >
-        {row.getValue("IsLocked") === true ? (
+        {row.getValue("IsLocked") === false ? (
           <Lock size={20} />
         ) : (
           <Unlock size={20} />

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { redirect, useParams, useRouter } from "next/navigation";
-import { BookUser, Lock, MoreHorizontal } from "lucide-react";
+import { BookUser, Lock, MailPlus, MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -27,6 +27,28 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const onResendEmail = async () => {
+    const token = getCookie("token");
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `/api/users/resendEmail/${data.id}`,
+        {},
+        {
+          baseURL: "http://localhost:3000",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "Application/json",
+          },
+        }
+      );
+      toast.success(`${response.data.message}`);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <AlertModal
@@ -47,6 +69,10 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={() => router.push(`/users/${data.id}`)}>
             <BookUser className="w-4 h-4 mr-2" />
             User details
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onResendEmail()}>
+            <MailPlus className="w-4 h-4 mr-2" />
+            Resend Email
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

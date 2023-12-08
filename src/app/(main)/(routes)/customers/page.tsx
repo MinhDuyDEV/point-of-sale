@@ -35,7 +35,6 @@ export default function DemoPage() {
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const router = useRouter();
   return (
     <motion.div
       className="h-screen px-8 py-10 mx-auto"

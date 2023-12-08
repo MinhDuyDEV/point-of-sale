@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "@/types/general.types";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useParams } from "next/navigation";
@@ -8,12 +9,19 @@ import React, { useEffect, useState } from "react";
 const OrderDetailPage = () => {
   const params = useParams();
   const [data, setData] = useState([]);
+  const [user, setUser] = useState<User>();
   const token = getCookie("token");
+  useEffect(() => {
+    const user = getCookie("user");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }, []);
   useEffect(() => {
     async function fetchOrder() {
       try {
         const response = await axios.get(
-          `/api/orders/employee/${params.userId}`,
+          `/api/orders/customer/${params.customerId}`,
           {
             baseURL: "http://localhost:3000",
             headers: {
@@ -32,8 +40,7 @@ const OrderDetailPage = () => {
       }
     }
     fetchOrder();
-  }, [params.userId, token]);
-  console.log("🚀 ~ fetchOrder ~ params.userId:", params.userId);
+  }, [params.customerId, token]);
   if (!data) {
     return null;
   }
@@ -63,10 +70,14 @@ const OrderDetailPage = () => {
               </div>
             </div>
             <div className="border-b-2 border-gray-300 pb-8 mb-8">
-              <h2 className="text-2xl font-bold mb-2">Bill FROM:</h2>
-              <div className="text-gray-700 mb-4">{order?.EmployeeName}</div>
+              <h2 className="text-2xl font-bold mb-2">Bill From:</h2>
+              <div className="text-gray-700 mb-4">
+                Name: {order?.EmployeeName}
+              </div>
               <h2 className="text-2xl font-bold mb-2">Bill To:</h2>
-              <div className="text-gray-700 mb-2">{order?.CustomerName}</div>
+              <div className="text-gray-700 mb-2">
+                Name: {order.CustomerName}
+              </div>
               <div className="text-gray-700 mb-2">
                 Address: {order.Customer.Address}
               </div>

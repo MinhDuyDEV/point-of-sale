@@ -11,17 +11,19 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Lock, Unlock } from "lucide-react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 
-const UserPage = ({ params }: { params: { userId: string } }) => {
-  const [user, setUser] = useState<User | null>(null);
+const UserPage = () => {
+  const [user, setUser] = useState<User>();
+  const params = useParams();
   const [data, setData] = useState([]);
   const token = getCookie("token");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const onLock = async (id: string | undefined) => {
+  let id = params.userId;
+  const onLock = async (id: string) => {
     const token = getCookie("token");
     try {
       setLoading(true);
@@ -37,7 +39,8 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
         }
       );
       toast.success(`${response.data.message}`);
-      router.back();
+      router.refresh();
+      router.push("/users");
     } catch (error: any) {
       console.log(error.message);
     } finally {
@@ -46,9 +49,9 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    async function fetchProduct() {
+    async function fetchUser() {
       try {
-        const response = await axios.get(`/api/users/${params.userId}`, {
+        const response = await axios.get(`/api/users/${id}`, {
           baseURL: "http://localhost:3000",
           headers: {
             "Content-Type": "Application/json",
@@ -61,30 +64,32 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
       }
     }
 
-    fetchProduct();
+    fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     async function fetchOrder() {
       try {
-        const response = await axios.get(
-          `/api/orders/employee/${params.userId}`,
-          {
-            baseURL: "http://localhost:3000",
-            headers: {
-              "Content-Type": "Application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/orders/employee/${id}`, {
+          baseURL: "http://localhost:3000",
+          headers: {
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setData(response.data.orders);
+        console.log(
+          "🚀 ~ fetchOrder ~ response.data.orders:",
+          response.data.orders
+        );
       } catch (error) {
         console.log(error);
       }
     }
     fetchOrder();
-  }, [params.userId, token]);
-  console.log(data);
+  }, [id, token]);
+  // console.log("🚀 ~ fetchUser ~ params.userId:", params.userId);
+  console.log("user", user);
   return (
     <motion.div
       className="h-auto px-8 py-6 mx-auto"
@@ -102,13 +107,15 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
             <AvatarImage src={user?.Profile_Picture} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <Button
-            onClick={() => onLock(user?.id)}
-            disabled={loading}
-            variant={user?.IsLocked ? "destructive" : "ghost"}
-          >
-            {user?.IsLocked ? <Lock /> : <Unlock />}
-          </Button>
+          {user && (
+            <Button
+              onClick={() => onLock(user?.id)}
+              disabled={loading}
+              variant={user?.IsLocked ? "ghost" : "destructive"}
+            >
+              {user?.IsLocked ? <Unlock /> : <Lock />}
+            </Button>
+          )}
         </div>
       </div>
       <Separator />
