@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { getCookie } from "cookies-next";
-import axios from "axios";
 import { motion } from "framer-motion";
 
 const DataTableReportRange = ({ data }: any) => {

@@ -27,6 +27,7 @@ import { ScanBarcode } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getCookie } from "cookies-next";
+import useCustomer from "@/hooks/use-customer";
 
 const formSchema = z.object({
   Fullname: z.string().min(2, {
@@ -45,6 +46,7 @@ const formSchema = z.object({
 export const revalidate = 0;
 
 const CartPage = () => {
+  const customer = useCustomer();
   const cart = useCart();
   const token = getCookie("token");
   const totalPrice = cart.items.reduce((total, item) => {
@@ -53,9 +55,9 @@ const CartPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Fullname: "",
-      PhoneNumber: "",
-      Address: "",
+      Fullname: customer.customer.Fullname || "",
+      PhoneNumber: customer.customer.PhoneNumber || "",
+      Address: customer.customer.Address || "",
       AmountPaidByCustomer: totalPrice || 0,
       TotalAmount: totalPrice || 0,
     },

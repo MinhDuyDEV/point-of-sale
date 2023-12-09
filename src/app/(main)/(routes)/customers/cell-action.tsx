@@ -25,6 +25,7 @@ import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { ProductColumn } from "./columns";
 import { setCookie } from "cookies-next";
+import useCustomer from "@/hooks/use-customer";
 
 interface CellActionProps {
   data: ProductColumn;
@@ -32,14 +33,13 @@ interface CellActionProps {
 
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
+  const customer = useCustomer();
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const onCopy = (data: any) => {
-    setCookie("customer", data);
-    toast.success("Billboard Id copied to the clipboard.");
+    customer.addCustomer(data);
   };
-  console.log("🚀 ~ onCopy ~ data:", data);
 
   return (
     <>
