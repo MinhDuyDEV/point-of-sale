@@ -19,7 +19,7 @@ export const sidebarLinks: TSidebarLink[] = [
     title: "Dashboard",
     icon: <IconChart />,
     path: "/dashboard",
-    role: ["admin"],
+    role: ["admin", "employee"],
   },
   {
     title: "POS",

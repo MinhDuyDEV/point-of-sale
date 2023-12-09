@@ -6,7 +6,7 @@ import { Product } from "@/types/general.types";
 
 interface CartStore {
   items: Product[];
-  addItem: (data: Product) => void;
+  addItem: (data: Product | null) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
 }
@@ -15,7 +15,8 @@ const useCart = create(
   persist<CartStore>(
     (set, get) => ({
       items: [],
-      addItem: (data: Product) => {
+      addItem: (data: Product | null) => {
+        if (!data) return;
         const currentItems = get().items;
         const existingItem = currentItems.find(
           (item: Product) => item._id === data._id
@@ -28,12 +29,14 @@ const useCart = create(
           ) {
             if (existingItem.Quantity > existingItem.Flag) {
               existingItem.Flag++;
+              toast.success("Item added to cart");
+            } else {
+              toast.error("Item out of stock");
             }
           }
           set({
             items: [...get().items],
           });
-          toast.success("Item added to cart");
         } else {
           data.Flag++;
           set({ items: [...get().items, data] });

@@ -7,15 +7,40 @@ import useCart from "@/hooks/use-cart";
 import ProductList from "@/components/point-of-sale/product/product-list";
 import CartItem from "@/components/point-of-sale/cart/cart-item";
 import { motion } from "framer-motion";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Product } from "@/types/general.types";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { ScanBarcode, Search } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+
+const searchNameProductFormSchema = z.object({
+  name: z.string(),
+});
+const searchBarcodeProductFormSchema = z.object({
+  barcode: z.string(),
+});
 
 const PointOfSalePage = () => {
   const [data, setData] = useState([]);
+  const [dataFilter, setDataFilter] = useState([]);
   const router = useRouter();
+  const formName = useForm<z.infer<typeof searchNameProductFormSchema>>({
+    resolver: zodResolver(searchNameProductFormSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+  const formBarcode = useForm<z.infer<typeof searchBarcodeProductFormSchema>>({
+    resolver: zodResolver(searchBarcodeProductFormSchema),
+    defaultValues: {
+      barcode: "",
+    },
+  });
   useEffect(() => {
     const token = getCookie("token");
     async function fetchProduct() {
@@ -28,6 +53,7 @@ const PointOfSalePage = () => {
           },
         });
         setData(response.data);
+        setDataFilter(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -39,35 +65,83 @@ const PointOfSalePage = () => {
   const totalPrice = cart.items.reduce((total, item) => {
     return total + Number(item.RetailPrice) * item.Flag;
   }, 0);
+  function onSubmitName(
+    productName: z.infer<typeof searchNameProductFormSchema>
+  ) {
+    const res = data.filter((item: Product) =>
+      item.Name.includes(productName.name)
+    );
+    setDataFilter(res);
+  }
+  function onSubmitBarcode(
+    productBarcode: z.infer<typeof searchBarcodeProductFormSchema>
+  ) {
+    const res = data.filter((item: Product) =>
+      item.Barcode.includes(productBarcode.barcode)
+    );
+    setDataFilter(res);
+    if (res.length === 1) {
+      cart.addItem(res[0]);
+    }
+  }
+
+  // console.log("🚀 ~ PointOfSalePage ~ dataFilter:", dataFilterName);
+  console.log("🚀 ~ PointOfSalePage ~ dataFilterBarcode:", dataFilter);
+
   return (
     <div className="flex flex-col gap-y-6">
-      <motion.div
-        className="flex items-center gap-5 w-[700px] mt-8 border border-gray-200 rounded-lg py-3 px-5 mx-auto"
-        initial={{ opacity: 0, y: -100 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <span className="flex-shrink-0 text-gray-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </span>
-        <input
-          type="text"
-          className="w-full bg-transparent outline-none"
-          placeholder="Enter your product..."
-        />
-      </motion.div>
+      <div className="flex items-center justify-center gap-5 mt-8">
+        <Form {...formName}>
+          <form onSubmit={formName.handleSubmit(onSubmitName)}>
+            <motion.div
+              className="flex items-center gap-5 w-[500px] border border-gray-200 rounded-lg py-2 px-4 "
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <span className="flex-shrink-0 text-gray-500">
+                <Search />
+              </span>
+              <Input
+                type="text"
+                className="w-full text-base bg-transparent outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 border-none p-0"
+                placeholder="Enter your product name..."
+                onChange={(e) => onSubmitName({ name: e.target.value })}
+              />
+            </motion.div>
+          </form>
+        </Form>
+        <Form {...formBarcode}>
+          <form onSubmit={formBarcode.handleSubmit(onSubmitBarcode)}>
+            <motion.div
+              className="flex items-center gap-5 w-[500px] border border-gray-200 rounded-lg py-2 px-4 "
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <span className="flex-shrink-0 text-gray-500">
+                <ScanBarcode />
+              </span>
+              <FormField
+                control={formBarcode.control}
+                name="barcode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        className="w-full text-base bg-transparent outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 border-none p-0"
+                        placeholder="Enter your product name..."
+                        onChange={(e) =>
+                          onSubmitBarcode({ barcode: e.target.value })
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+          </form>
+        </Form>
+      </div>
 
       <motion.div
         className="grid grid-cols-4"
@@ -80,7 +154,7 @@ const PointOfSalePage = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <ProductList data={data} />
+          <ProductList data={dataFilter} />
         </motion.div>
         {/* start cart */}
         <motion.div
