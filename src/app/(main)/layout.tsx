@@ -10,6 +10,7 @@ import SearchBar from "@/components/SearchBar";
 import { getCookie, hasCookie } from "cookies-next";
 import { User } from "@/types/general.types";
 import axios from "axios";
+import Link from "next/link";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>();
@@ -40,9 +41,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="">
+        <Link href="/customers">
           <Logo></Logo>
-        </div>
+        </Link>
+
         <div>
           <SearchBar></SearchBar>
         </div>

@@ -9,9 +9,11 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { IconLogout } from "./icons";
 import { deleteCookie, getCookie } from "cookies-next";
+import axios from "axios";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const token = getCookie("token");
   const [user, setUser] = useState<any>({});
   useEffect(() => {
     const info = getCookie("user");
@@ -19,7 +21,20 @@ export default function Sidebar() {
       setUser(JSON.parse(info));
     }
   }, []);
-
+  const onLogout = async () => {
+    axios.post(
+      "/api/users/logout",
+      {},
+      {
+        baseURL: "http://localhost:3000",
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    deleteCookie("token");
+  };
   return (
     <motion.div
       className="bg-gray-200 rounded-br-2xl rounded-tr-2xl"
@@ -41,7 +56,7 @@ export default function Sidebar() {
           className={cn(
             "flex items-center gap-5 font-bold text-zinc-500 hover:bg-zinc-300/50 hover:text-zinc-600 p-3 rounded-lg transition-all"
           )}
-          onClick={() => deleteCookie("token")}
+          onClick={() => onLogout()}
         >
           <span>
             <IconLogout />

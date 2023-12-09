@@ -24,7 +24,6 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { ProductColumn } from "./columns";
-import { setCookie } from "cookies-next";
 import useCustomer from "@/hooks/use-customer";
 
 interface CellActionProps {

@@ -31,7 +31,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Product Id copied to the clipboard.");
+    toast.success("Product barcode copied to the clipboard.");
   };
   const onDelete = async () => {
     try {
@@ -82,9 +82,9 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data._id)}>
+          <DropdownMenuItem onClick={() => onCopy(data.Barcode)}>
             <Copy className="w-4 h-4 mr-2" />
-            Copy ID
+            Copy Barcode
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => router.push(`/products/${data._id}`)}
