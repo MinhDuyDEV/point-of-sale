@@ -18,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { getCookie, setCookie } from "cookies-next";
 
 const formSchema = z.object({
   password: z.string(),
@@ -36,7 +38,32 @@ export default function SignInPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.password === values.passwordConfirm) {
-      router.push("/customers");
+      try {
+        const email = getCookie("email");
+        axios
+          .patch(
+            `http://localhost:3000/api/users/employees/firstChangePassword`,
+            {
+              Password: values.password,
+              Email: email,
+            }
+          )
+          .then(function (response) {
+            const token = response.data.token;
+            setCookie("token", token);
+            const user = response.data.user;
+            setCookie("user", user);
+            if (response.status === 200) {
+              toast.success("Login successfully");
+              router.push("/customers");
+            }
+          })
+          .catch((response) => {
+            toast.error(response.response.data.message);
+          });
+      } catch (error: any) {
+        console.log(error);
+      }
     } else {
       toast.error("Password confirm not match");
     }
@@ -72,7 +99,7 @@ export default function SignInPage() {
               name="passwordConfirm"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Password confirm</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Enter your password confirm"

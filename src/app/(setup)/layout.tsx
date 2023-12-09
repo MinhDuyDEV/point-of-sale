@@ -1,7 +1,11 @@
+"use client";
+
+import { User } from "@/types/general.types";
 import { getCookie } from "cookies-next";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function SetupLayout({
+export default function SetupLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -9,9 +13,6 @@ export default async function SetupLayout({
   const token = getCookie("token");
   if (!token) {
     redirect("/sign-in");
-  } else {
-    redirect(`/customers`);
   }
-
-  return <>{children}</>;
+  if (token) return <>{children}</>;
 }

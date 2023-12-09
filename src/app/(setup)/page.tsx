@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
-import { useStoreModal } from "@/hooks/use-store-modal";
+import { getCookie } from "cookies-next";
+import { redirect } from "next/navigation";
+import React from "react";
 
-const SetupPage = () => {
-  const onOpen = useStoreModal((state) => state.onOpen);
-  const isOpen = useStoreModal((state) => state.isOpen);
-
-  useEffect(() => {
-    if (!isOpen) {
-      onOpen();
-    }
-  }, [isOpen, onOpen]);
-
-  return null;
+const HomePage = () => {
+  const token = getCookie("token");
+  if (!token) {
+    return redirect("/sign-in");
+  }
+  return redirect("/customers");
 };
 
-export default SetupPage;
+export default HomePage;

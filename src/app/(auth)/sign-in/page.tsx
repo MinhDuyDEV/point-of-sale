@@ -50,15 +50,14 @@ export default function SignInPage() {
           }
         )
         .then((response) => {
+          console.log("🚀 ~ .then ~ response:", response.data);
           if (response.status === 200) {
+            setCookie("email", response.data.email);
             router.push("/first-sign-in");
           }
         })
         .catch((error) => {
-          if (error.response.status === 401) {
-            toast.error("Token is invalid");
-            router.push("/toast");
-          }
+          toast.error("Invalid token");
         });
     }
   }, [router, searchParams]);
