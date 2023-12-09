@@ -13,15 +13,16 @@ import Heading from "@/components/ui/heading";
 
 const MyOrdersPage = () => {
   const [user, setUser] = useState<User | null>(null);
+  const params = useParams();
   const [data, setData] = useState([]);
   const token = getCookie("token");
-  const params = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const info = getCookie("user");
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log("🚀 ~ fetchProduct ~ params.customerId:", params.customerId);
     async function fetchProduct() {
       try {
         setLoading(true);
@@ -62,7 +63,11 @@ const MyOrdersPage = () => {
       </div>
       <Separator />
       {loading === false && (
-        <DataTable columns={columns} data={data} searchKey="Customer" />
+        <DataTable
+          columns={columns}
+          data={data}
+          searchKey="CustomerPhoneNumber"
+        />
       )}
     </motion.div>
   );

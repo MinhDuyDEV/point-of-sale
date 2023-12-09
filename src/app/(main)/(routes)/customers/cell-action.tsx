@@ -39,6 +39,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
     setCookie("customer", data);
     toast.success("Billboard Id copied to the clipboard.");
   };
+  console.log("🚀 ~ onCopy ~ data:", data);
 
   return (
     <>
@@ -65,7 +66,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
             Save
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/customers/${data.id}/orders`)}
+            onClick={() => router.push(`/customers/${data._id}/orders`)}
             className="cursor-pointer"
           >
             <BookA className="w-4 h-4 mr-2" />

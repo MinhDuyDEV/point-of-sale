@@ -111,9 +111,9 @@ const UserPage = () => {
             <Button
               onClick={() => onLock(user?.id)}
               disabled={loading}
-              variant={user?.IsLocked ? "ghost" : "destructive"}
+              variant={user?.IsLocked ? "destructive" : "ghost"}
             >
-              {user?.IsLocked ? <Unlock /> : <Lock />}
+              {user?.IsLocked ? <Lock /> : <Unlock />}
             </Button>
           )}
         </div>

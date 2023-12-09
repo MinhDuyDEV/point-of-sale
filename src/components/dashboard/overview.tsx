@@ -53,10 +53,61 @@ const data = [
   },
 ];
 
+const dataFake = [
+  {
+    name: "Jan",
+    total: 4,
+  },
+  {
+    name: "Feb",
+    total: 6,
+  },
+  {
+    name: "Mar",
+    total: 5,
+  },
+  {
+    name: "Apr",
+    total: 24,
+  },
+  {
+    name: "May",
+    total: 22,
+  },
+  {
+    name: "Jun",
+    total: 10,
+  },
+  {
+    name: "Jul",
+    total: 7,
+  },
+  {
+    name: "Aug",
+    total: 15,
+  },
+  {
+    name: "Sep",
+    total: 4,
+  },
+  {
+    name: "Oct",
+    total: 30,
+  },
+  {
+    name: "Nov",
+    total: 20,
+  },
+  {
+    name: "Dec",
+    total: 10,
+  },
+];
+
 export function Overview() {
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data}>
+      <BarChart data={dataFake}>
         <XAxis
           dataKey="name"
           stroke="#888888"

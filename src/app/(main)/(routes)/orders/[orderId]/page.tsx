@@ -70,8 +70,10 @@ const OrderDetailPage = () => {
               </div>
             </div>
             <div className="border-b-2 border-gray-300 pb-8 mb-8">
-              <h2 className="text-2xl font-bold mb-4">Bill To:</h2>
-              <div className="text-gray-700 mb-2">{order.CustomerName}</div>
+              <h2 className="text-2xl font-bold mb-2">Bill From:</h2>
+              <div className="text-gray-700 mb-4">{order?.EmployeeName}</div>
+              <h2 className="text-2xl font-bold mb-2">Bill To:</h2>
+              <div className="text-gray-700 mb-2">{order?.CustomerName}</div>
               <div className="text-gray-700 mb-2">
                 Address: {order.Customer.Address}
               </div>

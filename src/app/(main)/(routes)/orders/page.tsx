@@ -45,7 +45,11 @@ const MyOrdersPage = () => {
 
   return (
     <div>
-      <DataTable columns={columns} data={data} searchKey="Customer" />
+      <DataTable
+        columns={columns}
+        data={data}
+        searchKey="CustomerPhoneNumber"
+      />
     </div>
   );
 };

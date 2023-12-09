@@ -10,7 +10,7 @@ export type ProductColumn = {
   Fullname: string;
   PhoneNumber: string;
   Address: string;
-  id: string;
+  _id: string;
 };
 
 export const columns: ColumnDef<ProductColumn>[] = [

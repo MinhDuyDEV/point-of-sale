@@ -82,6 +82,7 @@ const CartPage = () => {
       toast.success("Created Order successfully");
       router.refresh();
       router.push("/payment");
+      cart.removeAll();
     } catch (error: any) {
       toast.error(error.message);
     }
