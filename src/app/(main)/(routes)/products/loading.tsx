@@ -1,7 +1,12 @@
+import SkeletonPage from "@/components/skeleton";
 import React from "react";
 
 const loading = () => {
-  return <div>loading</div>;
+  return (
+    <div className="px-10">
+      <SkeletonPage></SkeletonPage>
+    </div>
+  );
 };
 
 export default loading;

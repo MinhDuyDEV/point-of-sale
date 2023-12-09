@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
@@ -15,7 +17,7 @@ const DataTableReportToday = () => {
         setLoading(true);
         await axios
           .get("api/reports/today", {
-            baseURL: "http://localhost:3000",
+            baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
             headers: {
               "Content-Type": "Application/json",
               Authorization: `Bearer ${token}`,

@@ -49,13 +49,13 @@ const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
   const onSubmit = async (data: UserFormValues) => {
     try {
       setLoading(true);
-      // await axios.post(`/api/users/register`, data, {
-      //   baseURL: "http://localhost:3000",
-      //   headers: {
-      //     "Content-Type": "Application/json",
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      await axios.post(`/api/users/register`, data, {
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       router.refresh();
       toast.success("Send email successfully");
       router.push(`/users`);

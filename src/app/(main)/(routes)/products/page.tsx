@@ -1,6 +1,6 @@
 "use client";
 
-import { Product, User } from "@/types/general.types";
+import { User } from "@/types/general.types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import axios from "axios";
@@ -26,7 +26,7 @@ export default function DemoPage() {
     async function fetchProduct() {
       try {
         const response = await axios.get("/api/products", {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,

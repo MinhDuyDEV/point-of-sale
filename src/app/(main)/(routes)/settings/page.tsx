@@ -45,7 +45,7 @@ export default function SettingPage() {
   useEffect(() => {
     axios
       .get("/api/users/avatar/getAvatar", {
-        baseURL: "http://localhost:3000",
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
         headers: {
           "Content-Type": "Application/json",
           Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ export default function SettingPage() {
     try {
       setLoading(true);
       await axios.patch(`/api/users/profiles/changePassword`, data, {
-        baseURL: "http://localhost:3000",
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
         headers: {
           "Content-Type": "Application/json",
           Authorization: `Bearer ${token}`,
@@ -186,7 +186,7 @@ export default function SettingPage() {
             <CardContent className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Switch id="airplane-mode" />
-                <Label htmlFor="airplane-mode">Airplane Mode</Label>
+                <Label htmlFor="airplane-mode">Mode</Label>
               </div>
             </CardContent>
           </Card>

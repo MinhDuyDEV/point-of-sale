@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import * as z from "zod";
@@ -33,7 +35,7 @@ const ChangeAvatar = (avatar: { avatar: string }) => {
       setLoading(true);
       await axios
         .patch(`/api/users/profiles/avatars`, data, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,

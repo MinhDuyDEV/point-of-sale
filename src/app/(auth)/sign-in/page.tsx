@@ -31,6 +31,10 @@ const formSchema = z.object({
 export default function SignInPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  console.log(
+    "🚀 ~ useEffect ~ process.env.NEXT_PUBLIC_BASE_URL:",
+    process.env.NEXT_PUBLIC_BASE_URL
+  );
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
@@ -43,7 +47,7 @@ export default function SignInPage() {
           `/api/sign-in`,
           { token: tokenLogin },
           {
-            baseURL: "http://localhost:3000",
+            baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
             headers: {
               "Content-Type": "Application/json",
             },
@@ -57,6 +61,7 @@ export default function SignInPage() {
           }
         })
         .catch((error) => {
+          router.push("/toast");
           toast.error("Invalid token");
         });
     }
@@ -73,7 +78,7 @@ export default function SignInPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       axios
-        .post("http://localhost:3000/api/users/login", {
+        .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login`, {
           ...values,
         })
         .then(function (response) {

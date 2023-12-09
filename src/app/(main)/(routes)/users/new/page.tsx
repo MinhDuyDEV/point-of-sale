@@ -14,7 +14,7 @@ const UserPage = ({ params }: { params: { userId: string } }) => {
     async function fetchProduct() {
       try {
         const response = await axios.get(`/api/users/${params.userId}`, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,

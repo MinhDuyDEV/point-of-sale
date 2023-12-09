@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -20,7 +22,7 @@ const OverViewBarChart = () => {
       try {
         await axios
           .get("/api/orders/getOrder/getFiveOrder", {
-            baseURL: "http://localhost:3000",
+            baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
             headers: {
               "Content-Type": "Application/json",
               Authorization: `Bearer ${token}`,

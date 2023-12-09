@@ -10,10 +10,12 @@ import { cn } from "@/lib/utils";
 import { IconLogout } from "./icons";
 import { deleteCookie, getCookie } from "cookies-next";
 import axios from "axios";
+import useCart from "@/hooks/use-cart";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const token = getCookie("token");
+  const cart = useCart();
   const [user, setUser] = useState<any>({});
   useEffect(() => {
     const info = getCookie("user");
@@ -22,17 +24,18 @@ export default function Sidebar() {
     }
   }, []);
   const onLogout = async () => {
-    axios.post(
+    await axios.post(
       "/api/users/logout",
       {},
       {
-        baseURL: "http://localhost:3000",
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
         headers: {
           "Content-Type": "Application/json",
           Authorization: `Bearer ${token}`,
         },
       }
     );
+    cart.removeAll();
     deleteCookie("token");
   };
   return (

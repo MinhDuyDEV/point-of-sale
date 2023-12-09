@@ -68,7 +68,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
       setLoading(true);
       if (initialData) {
         await axios.patch(`/api/products/${params.productId}`, data, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         });
       } else {
         await axios.post(`/api/products`, data, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,
@@ -96,7 +96,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     try {
       setLoading(true);
       await axios.delete(`/api/products/${params.productId}`, {
-        baseURL: "http://localhost:3000",
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
         headers: {
           "Content-Type": "Application/json",
           Authorization: `Bearer ${token}`,

@@ -35,7 +35,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         `/api/users/resendEmail/${data.id}`,
         {},
         {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "Application/json",

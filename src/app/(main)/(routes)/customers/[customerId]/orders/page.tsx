@@ -29,7 +29,7 @@ const MyOrdersPage = () => {
         const response = await axios.get(
           `/api/orders/customer/${params.customerId}`,
           {
-            baseURL: "http://localhost:3000",
+            baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
             headers: {
               "Content-Type": "Application/json",
               Authorization: `Bearer ${token}`,

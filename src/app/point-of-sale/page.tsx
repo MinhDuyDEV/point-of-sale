@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import Link from "next/link";
+import Logo from "@/components/Logo";
 
 const searchNameProductFormSchema = z.object({
   name: z.string(),
@@ -46,7 +48,7 @@ const PointOfSalePage = () => {
     async function fetchProduct() {
       try {
         const response = await axios.get("/api/products", {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,
@@ -89,7 +91,12 @@ const PointOfSalePage = () => {
   console.log("🚀 ~ PointOfSalePage ~ dataFilterBarcode:", dataFilter);
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="relative flex flex-col gap-y-6">
+      <div className="absolute top-5 left-5">
+        <Link href="/customers">
+          <Logo></Logo>
+        </Link>
+      </div>
       <div className="flex items-center justify-center gap-5 mt-8">
         <Form {...formName}>
           <form onSubmit={formName.handleSubmit(onSubmitName)}>
@@ -103,7 +110,7 @@ const PointOfSalePage = () => {
               </span>
               <Input
                 type="text"
-                className="w-full text-base bg-transparent outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 border-none p-0"
+                className="w-full p-0 text-base bg-transparent border-none outline-none focus-visible:ring-transparent focus-visible:ring-offset-0"
                 placeholder="Enter your product name..."
                 onChange={(e) => onSubmitName({ name: e.target.value })}
               />
@@ -128,7 +135,7 @@ const PointOfSalePage = () => {
                     <FormControl>
                       <Input
                         type="text"
-                        className="w-full text-base bg-transparent outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 border-none p-0"
+                        className="w-full p-0 text-base bg-transparent border-none outline-none focus-visible:ring-transparent focus-visible:ring-offset-0"
                         placeholder="Enter your product name..."
                         onChange={(e) =>
                           onSubmitBarcode({ barcode: e.target.value })

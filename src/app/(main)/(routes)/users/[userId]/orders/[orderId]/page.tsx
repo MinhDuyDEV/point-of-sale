@@ -15,7 +15,7 @@ const OrderDetailPage = () => {
         const response = await axios.get(
           `/api/orders/employee/${params.userId}`,
           {
-            baseURL: "http://localhost:3000",
+            baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
             headers: {
               "Content-Type": "Application/json",
               Authorization: `Bearer ${token}`,
@@ -48,12 +48,12 @@ const OrderDetailPage = () => {
           >
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center">
-                <div className="text-gray-700 font-bold text-2xl">
+                <div className="text-2xl font-bold text-gray-700">
                   POS Services
                 </div>
               </div>
               <div className="text-gray-700">
-                <div className="font-bold text-xl mb-2">INVOICE</div>
+                <div className="mb-2 text-xl font-bold">INVOICE</div>
                 <div className="text-sm">
                   Date: {order.createdAt.split("T")[0]}
                 </div>
@@ -62,31 +62,31 @@ const OrderDetailPage = () => {
                 </div>
               </div>
             </div>
-            <div className="border-b-2 border-gray-300 pb-8 mb-8">
-              <h2 className="text-2xl font-bold mb-2">Bill FROM:</h2>
-              <div className="text-gray-700 mb-4">{order?.EmployeeName}</div>
-              <h2 className="text-2xl font-bold mb-2">Bill To:</h2>
-              <div className="text-gray-700 mb-2">{order?.CustomerName}</div>
-              <div className="text-gray-700 mb-2">
+            <div className="pb-8 mb-8 border-b-2 border-gray-300">
+              <h2 className="mb-2 text-2xl font-bold">Bill FROM:</h2>
+              <div className="mb-4 text-gray-700">{order?.EmployeeName}</div>
+              <h2 className="mb-2 text-2xl font-bold">Bill To:</h2>
+              <div className="mb-2 text-gray-700">{order?.CustomerName}</div>
+              <div className="mb-2 text-gray-700">
                 Address: {order.Customer.Address}
               </div>
               <div className="text-gray-700">
                 Phone: {order.CustomerPhoneNumber}
               </div>
             </div>
-            <table className="w-full text-left mb-8">
+            <table className="w-full mb-8 text-left">
               <thead>
                 <tr>
-                  <th className="text-gray-700 font-bold uppercase py-2">
+                  <th className="py-2 font-bold text-gray-700 uppercase">
                     Description
                   </th>
-                  <th className="text-gray-700 font-bold uppercase py-2">
+                  <th className="py-2 font-bold text-gray-700 uppercase">
                     Quantity
                   </th>
-                  <th className="text-gray-700 font-bold uppercase py-2">
+                  <th className="py-2 font-bold text-gray-700 uppercase">
                     Price
                   </th>
-                  <th className="text-gray-700 font-bold uppercase py-2">
+                  <th className="py-2 font-bold text-gray-700 uppercase">
                     Total
                   </th>
                 </tr>
@@ -110,20 +110,20 @@ const OrderDetailPage = () => {
               </tbody>
             </table>
             <div className="flex justify-end mb-8">
-              <div className="text-gray-700 mr-2">Total:</div>
-              <div className="text-gray-700 font-bold text-xl">
+              <div className="mr-2 text-gray-700">Total:</div>
+              <div className="text-xl font-bold text-gray-700">
                 ${order.TotalAmount}
               </div>
             </div>
             <div className="flex justify-end mb-8">
-              <div className="text-gray-700 mr-2">Cus given:</div>
-              <div className="text-gray-700 font-bold text-xl">
+              <div className="mr-2 text-gray-700">Cus given:</div>
+              <div className="text-xl font-bold text-gray-700">
                 ${order.AmountPaidByCustomer}
               </div>
             </div>
             <div className="flex justify-end mb-8 ">
-              <div className="text-gray-700 mr-2">Change:</div>
-              <div className="text-gray-700 font-bold text-xl">
+              <div className="mr-2 text-gray-700">Change:</div>
+              <div className="text-xl font-bold text-gray-700">
                 ${order.ChangeReturnedToCustomer}
               </div>
             </div>

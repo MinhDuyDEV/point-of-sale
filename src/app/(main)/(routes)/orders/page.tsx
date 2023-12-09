@@ -27,7 +27,7 @@ const MyOrdersPage = () => {
     async function fetchProduct(id: string) {
       try {
         const response = await axios.get(`/api/orders/employee/${id}`, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,

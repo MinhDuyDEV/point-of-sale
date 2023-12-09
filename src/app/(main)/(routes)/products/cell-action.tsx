@@ -37,7 +37,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
     try {
       setLoading(true);
       await axios.delete(`/api/products/${data._id}`, {
-        baseURL: "http://localhost:3000",
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
         headers: {
           "Content-Type": "Application/json",
           Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
       toast.success("Product deleted.");
     } catch (error) {
       toast.error(
-        "Make sure you removed all categories using this billboard first."
+        "Make sure you removed all categories using this product first."
       );
     } finally {
       setLoading(false);

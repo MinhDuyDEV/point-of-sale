@@ -28,10 +28,10 @@ const UserPage = () => {
     try {
       setLoading(true);
       const response = await axios.patch(
-        `http://localhost:3000/api/users/lock/${id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/lock/${id}`,
         {},
         {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "Application/json",
@@ -52,7 +52,7 @@ const UserPage = () => {
     async function fetchUser() {
       try {
         const response = await axios.get(`/api/users/${id}`, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const UserPage = () => {
     async function fetchOrder() {
       try {
         const response = await axios.get(`/api/orders/employee/${id}`, {
-          baseURL: "http://localhost:3000",
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           headers: {
             "Content-Type": "Application/json",
             Authorization: `Bearer ${token}`,

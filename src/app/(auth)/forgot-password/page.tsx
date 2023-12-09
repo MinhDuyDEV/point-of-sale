@@ -17,12 +17,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   Email: z.string(),
 });
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,7 +35,24 @@ export default function ForgotPasswordPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    try {
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/recover-password/${values.Email}}`,
+          {
+            ...values,
+          }
+        )
+        .then(function (response) {
+          toast.success("Please check your email");
+          router.push("/sign-in");
+        })
+        .catch((response) => {
+          toast.error(response.response.data.message);
+        });
+    } catch (error: any) {
+      console.log(error);
+    }
   }
 
   return (

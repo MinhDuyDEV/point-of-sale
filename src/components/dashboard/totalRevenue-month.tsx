@@ -18,7 +18,7 @@ const TotalRevenue7Day = () => {
         setLoading(true);
         await axios
           .get("api/reports/this-month", {
-            baseURL: "http://localhost:3000",
+            baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
             headers: {
               "Content-Type": "Application/json",
               Authorization: `Bearer ${token}`,

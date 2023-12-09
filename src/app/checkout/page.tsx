@@ -75,7 +75,7 @@ const CartPage = () => {
     const data = { ListProduct: cart.items, Customer };
     try {
       axios.post("/api/orders", data, {
-        baseURL: "http://localhost:3000",
+        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
         headers: {
           "Content-Type": "Application/json",
           Authorization: `Bearer ${token}`,
@@ -83,8 +83,9 @@ const CartPage = () => {
       });
       toast.success("Created Order successfully");
       router.refresh();
-      router.push("/payment");
+      customer.removeAll();
       cart.removeAll();
+      router.push("/payment");
     } catch (error: any) {
       toast.error(error.message);
     }
