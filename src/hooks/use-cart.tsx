@@ -51,7 +51,7 @@ const useCart = create(
               if (item._id !== id) {
                 return item;
               } else {
-                item.Flag = 1;
+                item.Flag = 0;
               }
             }),
           ],
