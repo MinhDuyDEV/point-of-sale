@@ -42,7 +42,7 @@ export default function SignInPage() {
         const email = getCookie("email");
         axios
           .patch(
-            `http://localhost:3000/api/users/employees/firstChangePassword`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/employees/firstChangePassword`,
             {
               Password: values.password,
               Email: email,

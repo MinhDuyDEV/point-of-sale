@@ -31,10 +31,6 @@ const formSchema = z.object({
 export default function SignInPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  console.log(
-    "🚀 ~ useEffect ~ process.env.NEXT_PUBLIC_BASE_URL:",
-    process.env.NEXT_PUBLIC_BASE_URL
-  );
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
