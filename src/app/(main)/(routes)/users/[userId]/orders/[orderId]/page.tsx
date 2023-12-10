@@ -33,7 +33,6 @@ const OrderDetailPage = () => {
     }
     fetchOrder();
   }, [params.userId, token]);
-  console.log("🚀 ~ fetchOrder ~ params.userId:", params.userId);
   if (!data) {
     return null;
   }

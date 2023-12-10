@@ -65,7 +65,6 @@ export function Overview() {
       item.name = "Unknown";
     }
   });
-  console.log("🚀 ~ Overview ~ data:", data);
   return (
     <>
       {data && loading === false && (

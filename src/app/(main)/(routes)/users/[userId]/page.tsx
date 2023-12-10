@@ -88,8 +88,6 @@ const UserPage = () => {
     }
     fetchOrder();
   }, [id, token]);
-  // console.log("🚀 ~ fetchUser ~ params.userId:", params.userId);
-  console.log("user", user);
   return (
     <motion.div
       className="h-auto px-8 py-6 mx-auto"

@@ -18,7 +18,6 @@ const OrderDetailPage = () => {
     }
   }, []);
   useEffect(() => {
-    console.log("🚀 ~ fetchOrder ~ user?.id:", user?.id);
     async function fetchOrder() {
       try {
         const response = await axios.get(`/api/orders/employee/${user?.id}`, {

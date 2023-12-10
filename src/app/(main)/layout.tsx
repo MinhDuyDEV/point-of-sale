@@ -28,12 +28,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("🚀 ~ fetchProfile ~ response.data:", response.data);
       setUser(response.data);
     }
     getProfile();
   }, [token]);
-  console.log("🚀 ~ fetchProfile ~ user:", user);
   return (
     <div className="w-full h-full">
       <motion.div

@@ -54,7 +54,6 @@ export default function SignInPage() {
           }
         )
         .then((response) => {
-          console.log("🚀 ~ .then ~ response:", response.data);
           if (response.status === 200) {
             setCookie("email", response.data.email);
             router.push("/first-sign-in");

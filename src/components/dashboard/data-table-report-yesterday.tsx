@@ -37,7 +37,6 @@ const DataTableReportYesterday = () => {
   if (!data) {
     return null;
   }
-  console.log("🚀 ~ TotalRevenueToday ~ data:", data);
   return (
     <motion.div
       initial={{ opacity: 0, y: 100 }}

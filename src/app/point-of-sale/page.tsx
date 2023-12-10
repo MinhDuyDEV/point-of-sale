@@ -87,9 +87,6 @@ const PointOfSalePage = () => {
     }
   }
 
-  // console.log("🚀 ~ PointOfSalePage ~ dataFilter:", dataFilterName);
-  console.log("🚀 ~ PointOfSalePage ~ dataFilterBarcode:", dataFilter);
-
   return (
     <div className="relative flex flex-col gap-y-6">
       <div className="absolute top-5 left-5">

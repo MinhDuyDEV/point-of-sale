@@ -38,7 +38,6 @@ const TotalRevenueToday = () => {
   if (!data) {
     return null;
   }
-  console.log("🚀 ~ TotalRevenueToday ~ data:", data);
   return (
     <>
       {data && loading === false ? (

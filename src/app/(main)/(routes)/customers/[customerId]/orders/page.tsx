@@ -22,7 +22,6 @@ const MyOrdersPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("🚀 ~ fetchProduct ~ params.customerId:", params.customerId);
     async function fetchProduct() {
       try {
         setLoading(true);

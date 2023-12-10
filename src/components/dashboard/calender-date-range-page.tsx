@@ -31,10 +31,6 @@ const CalendarDateRangePickerPage = () => {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("🚀 ~ onSubmit ~ data:", {
-      from: format(data.dateStart, "MM/dd/yyyy"),
-      to: format(data.dateEnd, "MM/dd/yyyy"),
-    });
     try {
       setLoading(true);
       axios
@@ -64,7 +60,6 @@ const CalendarDateRangePickerPage = () => {
       setLoading(false);
     }
   }
-  console.log("🚀 ~ CalendarDateRangePickerPage ~ data:", data);
   return (
     <div>
       <Form {...form}>

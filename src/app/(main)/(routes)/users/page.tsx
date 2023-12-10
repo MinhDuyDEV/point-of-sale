@@ -34,7 +34,6 @@ export default function UsersPage() {
     }
     fetchProduct();
   }, []);
-  console.log("🚀 ~ UsersPage ~ data:", data);
   return (
     <motion.div
       className="h-auto px-8 py-6 mx-auto"
