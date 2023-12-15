@@ -14,6 +14,7 @@ import useCart from "@/hooks/use-cart";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  console.log("🚀 ~ Sidebar ~ pathname:", pathname.split("/")[1]);
   const token = getCookie("token");
   const cart = useCart();
   const [user, setUser] = useState<any>({});
@@ -38,6 +39,7 @@ export default function Sidebar() {
     cart.removeAll();
     deleteCookie("token");
   };
+  let string = "/";
   return (
     <motion.div
       className="bg-gray-200 rounded-br-2xl rounded-tr-2xl"
@@ -50,7 +52,9 @@ export default function Sidebar() {
           .map((link) => (
             <SidebarLink
               key={link.title}
-              isActive={pathname.includes(link.path)}
+              isActive={string
+                .concat(pathname.split("/")[1])
+                .includes(link.path)}
               link={link}
             ></SidebarLink>
           ))}
