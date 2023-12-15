@@ -81,8 +81,10 @@ export default function SignInPage() {
           setCookie("token", token);
           const user = response.data.user;
           setCookie("user", user);
-          toast.success("Login successfully");
-          router.push("/");
+          if (response.status === 200) {
+            toast.success("Login successfully");
+            router.push("/");
+          }
         })
         .catch((response) => {
           toast.error(response.response.data.message);
