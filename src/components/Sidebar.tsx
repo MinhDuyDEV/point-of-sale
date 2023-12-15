@@ -14,7 +14,6 @@ import useCart from "@/hooks/use-cart";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  console.log("🚀 ~ Sidebar ~ pathname:", pathname.split("/")[1]);
   const token = getCookie("token");
   const cart = useCart();
   const [user, setUser] = useState<any>({});
