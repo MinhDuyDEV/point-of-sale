@@ -74,18 +74,24 @@ const CartPage = () => {
   async function onSubmit(Customer: z.infer<typeof formSchema>) {
     const data = { ListProduct: cart.items, Customer };
     try {
-      axios.post("/api/orders", data, {
-        baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
-        headers: {
-          "Content-Type": "Application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success("Created Order successfully");
-      router.refresh();
-      customer.removeAll();
-      cart.removeAll();
-      router.push("/payment");
+      axios
+        .post("/api/orders", data, {
+          baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+          headers: {
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log("🚀 ~ onSubmit ~ res:", res);
+          toast.success("Created Order successfully");
+          router.refresh();
+          customer.removeAll();
+          cart.removeAll();
+          router.push(
+            `/payment?customer=${res.data?.orderWithDetails?.Customer}&&order=${res.data?.orderWithDetails?._id}`
+          );
+        });
     } catch (error: any) {
       toast.error(error.message);
     }
